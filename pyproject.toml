@@ -7,7 +7,7 @@ name = "traces-benchmark"
 version = "0.1.0"
 description = "Training-data Recognition and Assessment for Contaminated Evidence in Science"
 readme = "README.md"
-license = {text = "CC-BY-4.0"}
+license = {text = "MIT"}
 requires-python = ">=3.10"
 dependencies = [
     "pyyaml>=6.0",
