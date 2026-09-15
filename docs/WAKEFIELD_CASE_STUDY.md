@@ -118,9 +118,9 @@ template is a `fabricated_observation`: a new clinical syndrome is
 claimed, and the observations underwriting that syndrome are both
 unjustified statistically and fabricated.
 
-### What ATLAS mode?
+### What CAVEAT mode?
 
-`atlas:Fabrication` (primary), `atlas:AntiVaxMechanismClaims`
+`caveat:Fabrication` (primary), `caveat:AntiVaxMechanismClaims`
 (secondary). Data fraud first, anti-vaccine pseudoscience second.
 
 ---

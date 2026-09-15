@@ -14,8 +14,8 @@ journal: American Journal of Applied Chemistry
 year: 2016
 pdf_sha256: c6a8f31f0b4a7226295c2769b62378b35b604e609f1b552c05c1d0d2d018070b
 
-atlas:
-  primary_unreliability_mode: atlas:BiofieldEnergyHealing
+caveat:
+  primary_unreliability_mode: caveat:BiofieldEnergyHealing
   secondary_unreliability_modes: []
   claimed_domain: chemistry
   detection_markers: []

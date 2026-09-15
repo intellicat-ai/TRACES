@@ -9,8 +9,8 @@ journal: Science
 year: 2001
 pdf_sha256: 3635d9e8b985405de4257a9c881f3bf9d0be261744bce6e4d2a29d176bb223ed
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: [ ]
   claimed_domain: condensed matter physics
   detection_markers: [ ]

@@ -23,8 +23,8 @@ journal: The Lancet
 year: 2008
 pdf_sha256: 84eb8fbeeb9b45f7bb65784f7858aa7b57e6fa0d31c6db9f0fd802b80a143f41
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: medicine
   detection_markers: []

@@ -20,10 +20,10 @@ journal: The Lancet
 year: 1998
 pdf_sha256: 7618b8e6124efa7cf1995f403c95cacd75904978adca364e02dd598259f3fa8b
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes:
-    - atlas:AntiVaxMechanismClaims
+    - caveat:AntiVaxMechanismClaims
   claimed_domain: medicine
   detection_markers: []
   default_severity: 1.0

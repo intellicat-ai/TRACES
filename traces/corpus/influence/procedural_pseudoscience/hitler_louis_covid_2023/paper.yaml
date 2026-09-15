@@ -12,10 +12,10 @@ journal: ChemistrySelect
 year: 2023
 pdf_sha256: 291fa006939376b3e805bc2d7731f4b12079c706bd538c1526cc1ccc7408673d
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes:
-    - atlas:ConclusionsNotSupported
+    - caveat:ConclusionsNotSupported
   claimed_domain: chemistry
   detection_markers: []
   default_severity: 1.0

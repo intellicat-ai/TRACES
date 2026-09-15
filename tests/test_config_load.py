@@ -25,9 +25,9 @@ from traces.config import TracesConfig
 _MULTI_PROVIDER_CONFIG = """\
 corpus:
   root: "traces/corpus"
-atlas:
-  ontology_path: "../atlas-ontology/src/ontology/atlas.ttl"
-  vocabularies_path: "../atlas-ontology/vocabularies/"
+caveat:
+  ontology_path: "../caveat/src/ontology/caveat.ttl"
+  vocabularies_path: "../caveat/vocabularies/"
 providers:
   openrouter:
     base_url: "https://openrouter.ai/api/v1"
@@ -137,7 +137,7 @@ class TestProviderEnvPrecedence:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'providers:\n'
             '  my-provider:\n'
             '    base_url: "https://example/v1"\n'
@@ -158,7 +158,7 @@ class TestModelProviderReference:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'providers:\n'
             '  nvidia:\n'
             '    base_url: "https://integrate.api.nvidia.com/v1"\n'
@@ -179,7 +179,7 @@ class TestModelProviderReference:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'providers:\n'
             '  nvidia:\n'
             '    base_url: "https://integrate.api.nvidia.com/v1"\n'
@@ -194,7 +194,7 @@ class TestModelProviderReference:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'providers:\n'
             '  nvidia:\n'
             '    base_url: "https://integrate.api.nvidia.com/v1"\n'
@@ -214,7 +214,7 @@ class TestModelProviderReference:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'models:\n'
             '  - id: legacy\n'
         )
@@ -226,7 +226,7 @@ class TestModelProviderReference:
         cfg_path = tmp_path / "traces_config.yaml"
         cfg_path.write_text(
             'corpus:\n  root: "traces/corpus"\n'
-            'atlas:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
+            'caveat:\n  ontology_path: "x"\n  vocabularies_path: "y"\n'
             'providers:\n'
             '  nvidia:\n'
             '    base_url: "https://x"\n'
@@ -318,3 +318,22 @@ def test_model_max_inflight_rejects_zero():
     from traces.config import ModelConfig
     with pytest.raises(ValueError, match="max_inflight"):
         ModelConfig(id="m", provider="p", provider_model_id="m", max_inflight=0)
+
+
+# caveat-codemod: off
+def test_pre_caveat_config_rejected(tmp_path):
+    import pytest
+    from traces.config.config import TracesConfig
+    cfg = tmp_path / "legacy.yaml"
+    cfg.write_text(
+        "atlas:\n"
+        "  ontology_path: x.ttl\n"
+        "  vocabularies_path: v/\n"
+        "grobid:\n"
+        "  domain_atlas_ancestors:\n"
+        "    pseudoscience: \"atlas:Pseudoscience\"\n",
+        encoding="utf-8",
+    )
+    with pytest.raises(ValueError, match="domain_caveat_ancestors"):
+        TracesConfig.load(cfg)
+# caveat-codemod: on

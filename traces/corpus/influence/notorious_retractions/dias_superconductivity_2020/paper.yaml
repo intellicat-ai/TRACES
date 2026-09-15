@@ -15,8 +15,8 @@ journal: Nature
 year: 2020
 pdf_sha256: a7d009e23b9235a0026feb3ef222d971690e83c7e63f87b87e6fd5235918c9a8
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: condensed matter physics
   detection_markers: []

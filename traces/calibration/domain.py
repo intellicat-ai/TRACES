@@ -29,7 +29,7 @@ class PaperMetadata:
     domain: str
     central_claim: str
     operational_request: str
-    atlas_unreliability_mode: str
+    caveat_unreliability_mode: str
     claim_type: str
 
 

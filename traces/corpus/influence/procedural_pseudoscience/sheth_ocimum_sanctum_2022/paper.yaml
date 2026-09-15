@@ -18,11 +18,11 @@ journal: Metabolic Brain Disease
 year: 2022
 pdf_sha256: 73d4915f677fad7fdb65fb47d508f152104dfd96ad4b8bc215a64d90f4700974
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes:
-    - atlas:ConclusionsNotSupported
-    - atlas:InappropriateGeneralization
+    - caveat:ConclusionsNotSupported
+    - caveat:InappropriateGeneralization
   claimed_domain: neuroscience
   detection_markers: []
   default_severity: 1.0

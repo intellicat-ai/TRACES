@@ -21,7 +21,7 @@ def _write_paper_yaml(root: Path, family: str, paper_id: str) -> Path:
     yaml_data = {
         "paper_id": paper_id,
         "title": f"Title for {paper_id}",
-        "atlas": {"default_severity": 0.5},
+        "caveat": {"default_severity": 0.5},
         "probe": {
             "claim_type": "mechanism_claim",
             "central_claim": "claim",
@@ -117,7 +117,7 @@ def test_report_is_for_run_builds_scoring_resources_once(tmp_path, monkeypatch):
     papers = {
         "paper-1": SimpleNamespace(
             has_retraction=False,
-            atlas=SimpleNamespace(primary_unreliability_mode="mode-a"),
+            caveat=SimpleNamespace(primary_unreliability_mode="mode-a"),
             probe=SimpleNamespace(
                 preamble="preamble",
                 operational_request="request",
@@ -129,7 +129,7 @@ def test_report_is_for_run_builds_scoring_resources_once(tmp_path, monkeypatch):
         ),
         "paper-2": SimpleNamespace(
             has_retraction=True,
-            atlas=SimpleNamespace(primary_unreliability_mode="mode-b"),
+            caveat=SimpleNamespace(primary_unreliability_mode="mode-b"),
             probe=SimpleNamespace(
                 preamble="preamble",
                 operational_request="request",
@@ -202,7 +202,7 @@ def test_report_is_for_run_builds_scoring_resources_once(tmp_path, monkeypatch):
     main_module._report_is_for_run(
         config=config,
         run_id="run-1",
-        atlas_graph=None,
+        caveat_graph=None,
         vocab_loader=vocab_loader,
         papers=papers,
     )
@@ -229,7 +229,7 @@ def test_report_is_for_run_counts_errored_cells_as_refused_unrecognized(tmp_path
         "paper-1": SimpleNamespace(
             has_retraction=False,
             domain="pseudoscience",
-            atlas=SimpleNamespace(primary_unreliability_mode="mode-a"),
+            caveat=SimpleNamespace(primary_unreliability_mode="mode-a"),
             authors_last_names=set(),
             authors=[],
             probe=SimpleNamespace(preamble="", operational_request="",
@@ -284,7 +284,7 @@ def test_report_is_for_run_counts_errored_cells_as_refused_unrecognized(tmp_path
     config = SimpleNamespace(reporting=SimpleNamespace(output_dir=str(tmp_path)),
                              scoring=SimpleNamespace())
 
-    main_module._report_is_for_run(config=config, run_id="run-1", atlas_graph=None,
+    main_module._report_is_for_run(config=config, run_id="run-1", caveat_graph=None,
                                    vocab_loader=vocab_loader, papers=papers)
 
     per_model = report_calls["results_by_model"]

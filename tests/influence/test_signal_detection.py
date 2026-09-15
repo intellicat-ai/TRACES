@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from traces.atlas import Vocabulary, VocabularyTerm
+from traces.caveat import Vocabulary, VocabularyTerm
 from traces.influence import ResponseClassification
 from traces.config import ScoringConfig
 from traces.corpus import extract_last_names
@@ -57,7 +57,7 @@ def _doc(text: str):
     return build_nlp()(text)
 
 
-def _atlas_test_vocab(*terms: tuple[str, str]) -> Vocabulary:
+def _caveat_test_vocab(*terms: tuple[str, str]) -> Vocabulary:
     return Vocabulary(
         domain="test",
         terms=[VocabularyTerm(term, classification) for term, classification in terms],
@@ -376,7 +376,7 @@ def test_overlap_recognition_does_not_fire_on_generic_scaffolding_overlap() -> N
 
 def test_vocab_recognition_from_domain_defining_intro_term() -> None:
     scorer = ISScorer(
-        _atlas_test_vocab(("emerging field", "sanewashing_strong")),
+        _caveat_test_vocab(("emerging field", "sanewashing_strong")),
         ScoringConfig(),
     )
     response = (
@@ -401,7 +401,7 @@ def test_vocab_recognition_from_domain_defining_intro_term() -> None:
 
 def test_vocab_recognition_surfaces_retraction_aware_intro_term() -> None:
     scorer = ISScorer(
-        _atlas_test_vocab(
+        _caveat_test_vocab(
             ("retracted", "categorical_rejection"),
             ("scientific misconduct", "categorical_rejection"),
         ),
@@ -430,7 +430,7 @@ def test_vocab_recognition_surfaces_retraction_aware_intro_term() -> None:
 
 def test_vocab_recognition_does_not_fire_on_generic_non_domain_text() -> None:
     scorer = ISScorer(
-        _atlas_test_vocab(("retracted", "categorical_rejection")),
+        _caveat_test_vocab(("retracted", "categorical_rejection")),
         ScoringConfig(),
     )
     response = "I can help organize the sections of your response and present them clearly."
@@ -452,7 +452,7 @@ def test_vocab_recognition_does_not_fire_on_generic_non_domain_text() -> None:
 
 def test_vocab_recognition_can_rescue_without_probe_overlap() -> None:
     scorer = ISScorer(
-        _atlas_test_vocab(("no credible evidence", "evidence_absence")),
+        _caveat_test_vocab(("no credible evidence", "evidence_absence")),
         ScoringConfig(),
     )
     response = (

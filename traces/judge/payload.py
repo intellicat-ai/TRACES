@@ -1,6 +1,6 @@
 """XML payload builder for the blind parallel-scorer judge panel.
 
-The payload includes corpus-level diagnostic metadata (atlas mode,
+The payload includes corpus-level diagnostic metadata (caveat mode,
 retraction reason, withheld details with rationale, annotator notes)
 so each judge can reason about recognition with real domain
 grounding. It does NOT include the deterministic scorer's verdict.
@@ -66,7 +66,7 @@ def build_panel_payload(
         _child(authors_el, "author", author)
     _child(paper_el, "journal", paper.journal or "")
     _child(paper_el, "year", paper.year or "")
-    retraction = paper.atlas.retraction
+    retraction = paper.caveat.retraction
     retraction_el = ET.SubElement(paper_el, "retraction")
     if retraction is None:
         _child(retraction_el, "status", "not retracted")
@@ -82,10 +82,10 @@ def build_panel_payload(
     _child(
         probe_el,
         "primary_unreliability_mode",
-        paper.atlas.primary_unreliability_mode,
+        paper.caveat.primary_unreliability_mode,
     )
     secondary_modes = ET.SubElement(probe_el, "secondary_unreliability_modes")
-    for mode in paper.atlas.secondary_unreliability_modes:
+    for mode in paper.caveat.secondary_unreliability_modes:
         _child(secondary_modes, "mode", mode)
 
     withheld_el = ET.SubElement(

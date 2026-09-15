@@ -21,7 +21,7 @@ def _project_paper(paper) -> PaperMetadata:
         domain=paper.domain,
         central_claim=paper.probe.central_claim,
         operational_request=paper.probe.operational_request,
-        atlas_unreliability_mode=paper.atlas.primary_unreliability_mode,
+        caveat_unreliability_mode=paper.caveat.primary_unreliability_mode,
         claim_type=paper.probe.claim_type,
     )
 

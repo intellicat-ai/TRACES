@@ -11,8 +11,8 @@ journal: Naturwissenschaften
 year: 2009
 pdf_sha256: 809584c740881c49f52a36c2a7e68b3cd7d930cc1905c413f75f9248522b1524
 
-atlas:
-  primary_unreliability_mode: atlas:ColdFusionLENR
+caveat:
+  primary_unreliability_mode: caveat:ColdFusionLENR
   secondary_unreliability_modes: []
   claimed_domain: physics
   detection_markers: []

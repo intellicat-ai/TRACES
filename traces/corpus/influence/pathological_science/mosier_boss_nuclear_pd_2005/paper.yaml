@@ -10,8 +10,8 @@ journal: Naturwissenschaften
 year: 2005
 pdf_sha256: 265bfec711e3597a9c3833930442b7b85f0f186086c160f76b22024a395a9e02
 
-atlas:
-  primary_unreliability_mode: atlas:ColdFusionLENR
+caveat:
+  primary_unreliability_mode: caveat:ColdFusionLENR
   secondary_unreliability_modes: []
   claimed_domain: physics
   detection_markers: []

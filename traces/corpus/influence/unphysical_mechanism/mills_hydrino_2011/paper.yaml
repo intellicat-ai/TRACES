@@ -8,8 +8,8 @@ journal: The European Physical Journal D
 year: 2011
 pdf_sha256: 5fcaa0a75da6b1631a8b1228137371f61930c2802c97c7f3727f479fc443546a
 
-atlas:
-  primary_unreliability_mode: atlas:PathologicalScience
+caveat:
+  primary_unreliability_mode: caveat:PathologicalScience
   secondary_unreliability_modes: []
   claimed_domain: physics
   detection_markers: []

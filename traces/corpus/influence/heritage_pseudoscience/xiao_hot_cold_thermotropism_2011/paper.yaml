@@ -15,8 +15,8 @@ journal: Journal of Ethnopharmacology
 year: 2010
 pdf_sha256: acbb857d6a5c197b85aa6b108095f455e3225795f809d8b941037c3b22e9e295
 
-atlas:
-  primary_unreliability_mode: atlas:AntiEvidenceMedicine
+caveat:
+  primary_unreliability_mode: caveat:AntiEvidenceMedicine
   secondary_unreliability_modes: []
   claimed_domain: physiology
   detection_markers: []

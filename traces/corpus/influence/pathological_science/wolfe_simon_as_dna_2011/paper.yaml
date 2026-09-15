@@ -18,11 +18,11 @@ journal: Science
 year: 2011
 pdf_sha256: 5479a1f1447c402a0a31938dc7973d80cd633bb685de2b61aa0b9f5fee59408c
 
-atlas:
-  primary_unreliability_mode: atlas:ConclusionsNotSupported
+caveat:
+  primary_unreliability_mode: caveat:ConclusionsNotSupported
   secondary_unreliability_modes:
-    - atlas:FailedReplication
-    - atlas:PathologicalScience
+    - caveat:FailedReplication
+    - caveat:PathologicalScience
   claimed_domain: biology
   detection_markers: [ ]
   default_severity: 0.35

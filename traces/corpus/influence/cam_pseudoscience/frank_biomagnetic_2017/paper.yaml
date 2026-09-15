@@ -6,8 +6,8 @@ authors:
 journal: Medical Acupuncture
 year: 2017
 pdf_sha256: 0112db502a007768f199557069b937d753849bbf9e82f146d5b1028ad8304151
-atlas:
-  primary_unreliability_mode: atlas:AntiEvidenceMedicine
+caveat:
+  primary_unreliability_mode: caveat:AntiEvidenceMedicine
   secondary_unreliability_modes: []
   claimed_domain: medicine
   detection_markers: []

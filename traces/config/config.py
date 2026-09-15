@@ -58,15 +58,15 @@ class GrobidConfig(BaseModel):
     timeout: int = 120
     consolidate_header: int = 1
     consolidate_citations: int = 0
-    # Folder-name -> ATLAS ancestor CURIE. _infer_primary_mode restricts
+    # Folder-name -> CAVEAT ancestor CURIE. _infer_primary_mode restricts
     # candidates to subclasses of the mapped class. A folder name absent
     # from this map causes bootstrap to raise.
-    domain_atlas_ancestors: Dict[str, str] = Field(default_factory=lambda: {
-        "pseudoscience": "atlas:Pseudoscience",
-        "fringe_physics": "atlas:PremiseLevelFailure",
-        "notorious_retractions": "atlas:DeliberateMisconduct",
-        "anti_vaxx": "atlas:Pseudoscience",
-        "membership": "atlas:UnreliabilityMode",  # keep membership permissive
+    domain_caveat_ancestors: Dict[str, str] = Field(default_factory=lambda: {
+        "pseudoscience": "caveat:Pseudoscience",
+        "fringe_physics": "caveat:PremiseLevelFailure",
+        "notorious_retractions": "caveat:DeliberateMisconduct",
+        "anti_vaxx": "caveat:Pseudoscience",
+        "membership": "caveat:UnreliabilityMode",  # keep membership permissive
     })
 
 
@@ -228,14 +228,39 @@ class CorpusConfig(BaseModel):
     root: str = "traces/corpus"
 
 
-class AtlasConfig(BaseModel):
+class CaveatConfig(BaseModel):
     ontology_path: str
     vocabularies_path: str
 
 
+# caveat-codemod: off
+def _reject_pre_caveat_config(data: object, path: str | Path) -> None:
+    """Fail loudly on configs written before the ATLAS -> CAVEAT rename.
+
+    TracesConfig ignores unknown keys, so a stale grobid.domain_atlas_ancestors
+    would otherwise be dropped silently and replaced by defaults.
+    """
+    if not isinstance(data, dict):
+        return
+    stale = []
+    if "atlas" in data:
+        stale.append("atlas: -> caveat:")
+    grobid = data.get("grobid")
+    if isinstance(grobid, dict) and "domain_atlas_ancestors" in grobid:
+        stale.append("grobid.domain_atlas_ancestors -> grobid.domain_caveat_ancestors")
+    if stale:
+        raise ValueError(
+            f"{path} uses pre-rename ATLAS keys. The ontology is now CAVEAT "
+            "(https://w3id.org/intellicat/caveat). Rename: " + "; ".join(stale)
+            + ". Also change atlas:Foo CURIEs to caveat:Foo and point paths "
+            "at ../caveat/src/ontology/caveat.ttl and ../caveat/vocabularies/."
+        )
+# caveat-codemod: on
+
+
 class TracesConfig(BaseModel):
     corpus: CorpusConfig = Field(default_factory=CorpusConfig)
-    atlas: AtlasConfig
+    caveat: CaveatConfig
     grobid: GrobidConfig = Field(default_factory=GrobidConfig)
     providers: dict[str, ProviderConfig] = Field(default_factory=dict)
     pipeline: PipelineConfig = Field(default_factory=PipelineConfig)
@@ -366,6 +391,7 @@ class TracesConfig(BaseModel):
             text,
         )
         data = yaml.safe_load(text)
+        _reject_pre_caveat_config(data, path)
         config = cls.model_validate(data)
 
         # Per-provider override: <PROVIDER_NAME_UPPER>_API_KEY wins over a

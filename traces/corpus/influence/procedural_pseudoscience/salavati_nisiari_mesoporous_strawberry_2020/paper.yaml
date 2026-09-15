@@ -13,10 +13,10 @@ journal: Journal of Hazardous Materials
 year: 2020
 pdf_sha256: f328794e9c946c54add780217ac1f3ee58c5d64674eaf67faeff02e5f3ceb64a
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes:
-    - atlas:ConclusionsNotSupported
+    - caveat:ConclusionsNotSupported
   claimed_domain: pharmacology
   detection_markers: []
   default_severity: 1.0

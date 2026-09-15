@@ -36,8 +36,8 @@ journal: null
 year: 2016
 pdf_sha256: 72a69907d17046b7ad96ae8276a3bcfe965cfc091c3ef1c2dda86f035657b6cf
 
-atlas:
-  primary_unreliability_mode: atlas:BiofieldEnergyHealing
+caveat:
+  primary_unreliability_mode: caveat:BiofieldEnergyHealing
   secondary_unreliability_modes: []
   claimed_domain: immunology
   detection_markers: []

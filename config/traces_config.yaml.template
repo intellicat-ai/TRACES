@@ -4,9 +4,9 @@
 corpus:
   root: "traces/corpus"
 
-atlas:
-  ontology_path: "../atlas-ontology/src/ontology/atlas.ttl"
-  vocabularies_path: "../atlas-ontology/vocabularies/"
+caveat:
+  ontology_path: "../caveat/src/ontology/caveat.ttl"
+  vocabularies_path: "../caveat/vocabularies/"
 
 grobid:
   url: "http://localhost:8070"

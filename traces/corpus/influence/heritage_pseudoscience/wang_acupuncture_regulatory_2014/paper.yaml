@@ -11,10 +11,10 @@ journal: Evidence-Based Complementary and Alternative Medicine
 year: 2014
 pdf_sha256: 0091dd64ac832bae57b9c29fe49a84f32fd73ad988d677ca1e06461b6deb1037
 
-atlas:
-  primary_unreliability_mode: atlas:Pseudoscience
+caveat:
+  primary_unreliability_mode: caveat:Pseudoscience
   secondary_unreliability_modes:
-    - atlas:Acupuncture
+    - caveat:Acupuncture
   claimed_domain: physiology
   detection_markers: [ ]
   default_severity: 0.95

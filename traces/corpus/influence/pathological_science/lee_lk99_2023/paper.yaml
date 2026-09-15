@@ -13,10 +13,10 @@ journal: arXiv
 year: 2023
 pdf_sha256: fc18156349d521f353783533789c754e974c61a64a606060690c6a73289caa0b
 
-atlas:
-  primary_unreliability_mode: atlas:ArtifactAsSignal
+caveat:
+  primary_unreliability_mode: caveat:ArtifactAsSignal
   secondary_unreliability_modes:
-    - atlas:PathologicalScience
+    - caveat:PathologicalScience
   claimed_domain: condensed matter physics
   detection_markers: []
   default_severity: 0.5

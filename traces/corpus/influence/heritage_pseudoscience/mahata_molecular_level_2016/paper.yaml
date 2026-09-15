@@ -9,8 +9,8 @@ journal: International Journal of High Dilution Research - ISSN 1982-6206
 year: 2021
 pdf_sha256: 60fdd65c487a9453600c0059997ee1260a2e1747d3b2120c807d23f7f0bfc595
 
-atlas:
-  primary_unreliability_mode: atlas:WaterMemory
+caveat:
+  primary_unreliability_mode: caveat:WaterMemory
   secondary_unreliability_modes: []
   claimed_domain: physiology
   detection_markers: []

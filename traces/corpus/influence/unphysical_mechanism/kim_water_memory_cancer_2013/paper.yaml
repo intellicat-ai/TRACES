@@ -7,8 +7,8 @@ journal: 'Fluid Mechanics: Open Access'
 year: 2013
 pdf_sha256: 810944c526cd5a3146091c56145298c96f6823a748b31ae7acccd63148aaeca1
 
-atlas:
-  primary_unreliability_mode: atlas:WaterMemory
+caveat:
+  primary_unreliability_mode: caveat:WaterMemory
   secondary_unreliability_modes: []
   claimed_domain: biophysics
   detection_markers: []

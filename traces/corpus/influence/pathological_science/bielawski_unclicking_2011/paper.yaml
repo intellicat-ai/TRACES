@@ -9,8 +9,8 @@ journal: Science
 year: 2011
 pdf_sha256: 80035f917ded4f0f208dce63a881227762c6a2867ef551ca0792060869d00daf
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: chemistry
   detection_markers: []

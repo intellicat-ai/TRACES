@@ -16,11 +16,11 @@ journal: Matter
 year: 2022
 pdf_sha256: 35fd4301afbed36672ef24c849b6004646c7c68537d51b06e67172c5ea39a24a
 
-atlas:
-  primary_unreliability_mode: atlas:ConclusionsNotSupported
+caveat:
+  primary_unreliability_mode: caveat:ConclusionsNotSupported
   secondary_unreliability_modes:
-    - atlas:FailedReplication
-    - atlas:PathologicalScience
+    - caveat:FailedReplication
+    - caveat:PathologicalScience
   claimed_domain: chemistry
   detection_markers: []
   default_severity: 0.35

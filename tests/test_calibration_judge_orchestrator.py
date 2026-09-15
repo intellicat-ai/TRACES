@@ -53,7 +53,7 @@ def _mk_paper():
     p = MagicMock()
     p.paper_id = "p1"
     p.domain = "pseudoscience"
-    p.atlas.primary_unreliability_mode = "atlas:Pseudoscience"
+    p.caveat.primary_unreliability_mode = "caveat:Pseudoscience"
     p.has_retraction = False
     p.probe.claim_type = "cargo_cult_experiment"
     p.probe.central_claim = "X cures Y"

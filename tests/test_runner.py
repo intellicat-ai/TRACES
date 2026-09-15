@@ -10,7 +10,7 @@ from pathlib import Path
 from unittest.mock import MagicMock
 
 from traces.config import (
-    AtlasConfig,
+    CaveatConfig,
     ModelConfig,
     PipelineConfig,
     ProviderConfig,
@@ -29,7 +29,7 @@ from traces.prompts import ISProbe
 
 def _make_runner() -> ISRunner:
     cfg = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         pipeline=PipelineConfig(concurrency=1),
         providers={
             "local": ProviderConfig(
@@ -483,7 +483,7 @@ def test_runner_caches_one_client_per_provider_and_shares_limiter():
     the same ThreadSafeRpmLimiter (so RPM quotas are per-endpoint, not
     duplicated per-model)."""
     cfg = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         pipeline=PipelineConfig(concurrency=1),
         providers={
             "provider_a": ProviderConfig(
@@ -522,14 +522,14 @@ def test_runner_uses_dispatcher_for_model(tmp_path):
     gets a result, writes a checkpoint."""
     from unittest.mock import MagicMock, patch
     from traces.config import (
-        AtlasConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig,
+        CaveatConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig,
         TracesConfig,
     )
     from traces.pipeline.runner import ISRunner
     from traces.prompts import ISProbe
 
     config = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         providers={"p": ProviderConfig(base_url="http://x", rpm_limit=0)},
         pipeline=PipelineConfig(concurrency=1, checkpoint_interval=10),
         audit=AuditConfig(provider="p", judge_model="m1", proposer_model="m1"),
@@ -564,14 +564,14 @@ def test_runner_concurrency_with_failing_model_marks_tripped(tmp_path):
     """
     from unittest.mock import MagicMock
     from traces.config import (
-        AtlasConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig,
+        CaveatConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig,
         TracesConfig, TripThresholdsConfig,
     )
     from traces.pipeline.runner import ISRunner
     from traces.pipeline.provider_client import ProviderHTTPError
 
     config = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         providers={"p": ProviderConfig(base_url="http://x", rpm_limit=0)},
         pipeline=PipelineConfig(
             concurrency=4,
@@ -630,7 +630,7 @@ def test_runner_resume_keeps_successful_pairs_skipped_and_retries_failures(tmp_p
     from traces.config import AuditConfig
 
     config = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         providers={"p": ProviderConfig(base_url="http://x", rpm_limit=0)},
         pipeline=PipelineConfig(concurrency=1, checkpoint_interval=10),
         audit=AuditConfig(provider="p", judge_model="m1", proposer_model="m1"),
@@ -672,12 +672,12 @@ def test_runner_emits_panel_summary_at_end(caplog, tmp_path):
     import logging
     from unittest.mock import MagicMock, patch
     from traces.config import (
-        AtlasConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig, TracesConfig,
+        CaveatConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig, TracesConfig,
     )
     from traces.pipeline.runner import ISRunner
 
     config = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         providers={"p": ProviderConfig(base_url="http://x", rpm_limit=0)},
         pipeline=PipelineConfig(concurrency=1),
         models=[ModelConfig(id="m1", provider="p", provider_model_id="m1")],

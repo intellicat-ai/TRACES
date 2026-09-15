@@ -14,8 +14,8 @@ journal: Integrative Cancer Therapies
 year: 2019
 pdf_sha256: 2b053294acff232371712b4b4cc1010877cb413c2a1b3bf1b84a4521e08df815
 
-atlas:
-  primary_unreliability_mode: atlas:BiofieldEnergyHealing
+caveat:
+  primary_unreliability_mode: caveat:BiofieldEnergyHealing
   secondary_unreliability_modes: []
   claimed_domain: immunology
   detection_markers: []

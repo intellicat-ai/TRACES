@@ -29,8 +29,8 @@ journal: Circulation
 year: 2014
 pdf_sha256: 61b09a86ad50544d280de9b11b44985f6baf7fa6aa523f23a72b3806d706bfa2
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: medicine
   detection_markers: []

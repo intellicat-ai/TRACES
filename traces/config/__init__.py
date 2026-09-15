@@ -1,7 +1,7 @@
 """Configuration package exports for TRACES."""
 
 from traces.config.config import (
-    AtlasConfig,
+    CaveatConfig,
     AuditConfig,
     CalibrationConfig,
     CorpusConfig,
@@ -19,7 +19,7 @@ from traces.config.config import (
 )
 
 __all__ = [
-    "AtlasConfig",
+    "CaveatConfig",
     "AuditConfig",
     "CalibrationConfig",
     "CorpusConfig",

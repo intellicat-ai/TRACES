@@ -10,11 +10,11 @@ journal: Weed Biology and Management
 year: 2009
 pdf_sha256: e431661a6071e628a626b613584032438e0c4d03a8539c3c23edb44da6b46a65
 
-atlas:
-  primary_unreliability_mode: atlas:MagnetizedWater
+caveat:
+  primary_unreliability_mode: caveat:MagnetizedWater
   secondary_unreliability_modes:
-    - atlas:Fabrication
-    - atlas:UnfalsifiableDesign
+    - caveat:Fabrication
+    - caveat:UnfalsifiableDesign
   claimed_domain: agricultural science
   detection_markers: [ ]
   default_severity: 1.0

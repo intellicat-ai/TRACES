@@ -12,8 +12,8 @@ journal: Electromagnetic Biology and Medicine
 year: 2005
 pdf_sha256: 1db407b4911895f3cfcfc172cf3e1240edd80d5a3899f687443bc64fa6f1c846
 
-atlas:
-  primary_unreliability_mode: atlas:WaterMemory
+caveat:
+  primary_unreliability_mode: caveat:WaterMemory
   secondary_unreliability_modes: []
   claimed_domain: biophysics
   detection_markers: []

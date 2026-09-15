@@ -4,7 +4,7 @@
 # Prerequisites:
 #   1. Ollama running locally (http://localhost:11434)
 #   2. Target model pulled: `ollama pull <model>` or available via Ollama Cloud
-#   3. ATLAS ontology repo cloned next to this one (only needed for `report is`)
+#   3. CAVEAT ontology repo cloned next to this one (only needed for `report is`)
 #
 # This template targets local-only Ollama with NVIDIA NIM as the calibration
 # judge. For the cloud-provider variant (NVIDIA + OpenRouter + Groq, 46-model
@@ -13,24 +13,24 @@
 corpus:
   root: "traces/corpus"
 
-atlas:
-  ontology_path: "../atlas-ontology/src/ontology/atlas.ttl"
-  vocabularies_path: "../atlas-ontology/vocabularies/"
+caveat:
+  ontology_path: "../caveat/src/ontology/caveat.ttl"
+  vocabularies_path: "../caveat/vocabularies/"
 
 grobid:
   url: "http://localhost:8070"
   timeout: 120
   consolidate_header: 1
   consolidate_citations: 0
-  # Folder-name -> ATLAS ancestor CURIE. Bootstrap restricts ATLAS mode
+  # Folder-name -> CAVEAT ancestor CURIE. Bootstrap restricts CAVEAT mode
   # candidates to subclasses of the mapped class; an unmapped folder
   # raises rather than silently inferring nothing.
-  domain_atlas_ancestors:
-    pseudoscience: "atlas:Pseudoscience"
-    fringe_physics: "atlas:PremiseLevelFailure"
-    notorious_retractions: "atlas:DeliberateMisconduct"
-    anti_vaxx: "atlas:Pseudoscience"
-    membership: "atlas:UnreliabilityMode"
+  domain_caveat_ancestors:
+    pseudoscience: "caveat:Pseudoscience"
+    fringe_physics: "caveat:PremiseLevelFailure"
+    notorious_retractions: "caveat:DeliberateMisconduct"
+    anti_vaxx: "caveat:Pseudoscience"
+    membership: "caveat:UnreliabilityMode"
 
 # Each entry under `providers:` is one OpenAI-compatible /v1/chat/completions
 # endpoint. Models reference a provider by name (`provider: ollama`); the

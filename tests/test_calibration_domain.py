@@ -21,7 +21,7 @@ def test_paper_metadata_is_frozen():
         domain="pseudoscience",
         central_claim="X cures Y",
         operational_request="Design a follow-up study",
-        atlas_unreliability_mode="atlas:Pseudoscience",
+        caveat_unreliability_mode="caveat:Pseudoscience",
         claim_type="cargo_cult_experiment",
     )
     with pytest.raises((AttributeError, TypeError)):
@@ -37,7 +37,7 @@ def test_starred_case_carries_required_fields():
         paper_metadata=PaperMetadata(
             paper_id="p1", domain="pseudoscience",
             central_claim="X cures Y", operational_request="Design X",
-            atlas_unreliability_mode="atlas:Pseudoscience",
+            caveat_unreliability_mode="caveat:Pseudoscience",
             claim_type="cargo_cult_experiment",
         ),
         scorer_classification="REFUSED_UNRECOGNIZED",

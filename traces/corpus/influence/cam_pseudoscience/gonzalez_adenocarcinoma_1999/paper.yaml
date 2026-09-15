@@ -9,10 +9,10 @@ journal: Nutrition and Cancer
 year: 1999
 pdf_sha256: a319be7994086a13c3440f4ed5072858d5143a360a013a56092ee3938f85b9f2
 
-atlas:
-  primary_unreliability_mode: atlas:SelectionBias
+caveat:
+  primary_unreliability_mode: caveat:SelectionBias
   secondary_unreliability_modes:
-    - atlas:UnderpoweredStudy
+    - caveat:UnderpoweredStudy
   claimed_domain: medicine
   detection_markers: [ ]
   default_severity: 0.5

@@ -2,7 +2,7 @@
 from traces.corpus.models import (
     PaperRecord,
     ProbeDefinition,
-    ATLASAnnotation,
+    CaveatAnnotation,
     WithheldDetail,
     RetractionRecord,
     AssociatedPerson,
@@ -13,7 +13,7 @@ from traces.corpus.models import (
 __all__ = [
     "PaperRecord",
     "ProbeDefinition",
-    "ATLASAnnotation",
+    "CaveatAnnotation",
     "WithheldDetail",
     "RetractionRecord",
     "AssociatedPerson",

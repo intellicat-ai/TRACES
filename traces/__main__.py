@@ -32,7 +32,7 @@ import sys
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
-from traces.atlas.ontology_loader import ATLASGraph
+from traces.caveat.ontology_loader import CaveatGraph
 from traces.cli_support import (
     CliError,
     check_config_path,
@@ -198,7 +198,7 @@ def cmd_run_is(args):
 def _report_is_for_run(
         config,
         run_id,
-        atlas_graph,
+        caveat_graph,
         vocab_loader,
         papers,
         results_path_override=None,
@@ -233,12 +233,12 @@ def _report_is_for_run(
         if paper is None:
             n_orphans += 1
         has_retraction = paper.has_retraction if paper else False
-        atlas_mode = paper.atlas.primary_unreliability_mode if paper else None
-        scorer_key = (atlas_mode, has_retraction)
+        caveat_mode = paper.caveat.primary_unreliability_mode if paper else None
+        scorer_key = (caveat_mode, has_retraction)
         scorer = scorer_cache.get(scorer_key)
         if scorer is None:
             vocab = vocab_loader.load_rejection_vocabulary(
-                mode=atlas_mode, has_retraction=has_retraction
+                mode=caveat_mode, has_retraction=has_retraction
             )
             scorer = ISScorer(
                 vocabulary=vocab,
@@ -299,7 +299,7 @@ def _report_is_for_run(
 
 
 def cmd_report_is(args):
-    from traces.atlas import VocabularyLoader
+    from traces.caveat import VocabularyLoader
     from traces.corpus.loader import CorpusLoader
 
     # Validate flag combinations.
@@ -317,11 +317,11 @@ def cmd_report_is(args):
 
     config = _preflight_config(args, require_api_key=False)
 
-    if not Path(config.atlas.ontology_path).exists():
+    if not Path(config.caveat.ontology_path).exists():
         raise CliError(
-            f"ATLAS ontology not found at {config.atlas.ontology_path}\n"
-            f"  Clone the atlas-ontology repo next to TRACES, or edit "
-            f"atlas.ontology_path in {_config_path(args)}."
+            f"CAVEAT ontology not found at {config.caveat.ontology_path}\n"
+            f"  Clone the caveat repo next to TRACES, or edit "
+            f"caveat.ontology_path in {_config_path(args)}."
         )
 
     if args.sweep_id is not None:
@@ -329,11 +329,11 @@ def cmd_report_is(args):
     else:
         run_ids = [args.run_id]  # may be [None] for legacy single-run
 
-    # Heavy setup once: corpus, ATLAS graph, vocab loader.
+    # Heavy setup once: corpus, CAVEAT graph, vocab loader.
     loader = CorpusLoader(config.corpus.root)
     papers = loader.load_influence()
-    atlas_graph = ATLASGraph(config.atlas.ontology_path, config.atlas.vocabularies_path)
-    vocab_loader = VocabularyLoader(atlas_graph)
+    caveat_graph = CaveatGraph(config.caveat.ontology_path, config.caveat.vocabularies_path)
+    vocab_loader = VocabularyLoader(caveat_graph)
 
     if args.sweep_id is not None:
         logger.info(
@@ -345,7 +345,7 @@ def cmd_report_is(args):
         run_id = run_ids[0]
         report_path = _report_is_for_run(
             config, run_id,
-            atlas_graph, vocab_loader, papers,
+            caveat_graph, vocab_loader, papers,
             results_path_override=args.results,
             output_override=args.output,
         )
@@ -359,10 +359,10 @@ def cmd_report_is(args):
     )
 
     def _report_worker(run_id: str):
-        worker_vocab_loader = VocabularyLoader(atlas_graph)
+        worker_vocab_loader = VocabularyLoader(caveat_graph)
         report_path = _report_is_for_run(
             config, run_id,
-            atlas_graph, worker_vocab_loader, papers,
+            caveat_graph, worker_vocab_loader, papers,
             results_path_override=None,
             output_override=None,
         )
@@ -463,7 +463,7 @@ def cmd_corpus_show(args):
         )
     d = inspect_mod.paper_detail(papers[args.paper_id])
     for key in ["paper_id", "doi", "title", "year", "domain", "claim_type",
-                "atlas_mode", "has_retraction", "preamble_chars",
+                "caveat_mode", "has_retraction", "preamble_chars",
                 "operational_request_chars"]:
         print(f"{key + ':':28s}{d[key]}")
     print(f"central_claim:")
@@ -665,8 +665,8 @@ def cmd_stats_compare(args):
 
 def cmd_calibrate_judge(args):
     """Run the LLM judge stage (Stage 1) over a (named or auto-picked) run."""
-    from traces.atlas import VocabularyLoader
-    from traces.atlas.ontology_loader import ATLASGraph
+    from traces.caveat import VocabularyLoader
+    from traces.caveat.ontology_loader import CaveatGraph
     from traces.calibration.judge_orchestrator import run_judge_stage
     from traces.calibration.rescoring import make_scorer_factory
     from traces.config import TracesConfig
@@ -695,8 +695,8 @@ def cmd_calibrate_judge(args):
     raw_results = load_raw_results(str(paths.raw_results))
     loader = CorpusLoader(config.corpus.root)
     papers = loader.load_influence()
-    atlas = ATLASGraph(config.atlas.ontology_path, config.atlas.vocabularies_path)
-    vocab_loader = VocabularyLoader(atlas)
+    caveat = CaveatGraph(config.caveat.ontology_path, config.caveat.vocabularies_path)
+    vocab_loader = VocabularyLoader(caveat)
     scorer_factory = make_scorer_factory(vocab_loader, config.scoring)
 
     rubric = (Path(__file__).parent / "calibration" / "rubric.md").read_text()
@@ -778,8 +778,8 @@ def _score_judge_for_run(config, run_id, args, papers, scorer_factory, rubric):
 
 def cmd_score_judge(args):
     """Run the parallel-scorer judge panel over a (named or auto-picked) run."""
-    from traces.atlas import VocabularyLoader
-    from traces.atlas.ontology_loader import ATLASGraph
+    from traces.caveat import VocabularyLoader
+    from traces.caveat.ontology_loader import CaveatGraph
     from traces.calibration.rescoring import make_scorer_factory
     from traces.config import TracesConfig
     from traces.corpus.loader import CorpusLoader
@@ -811,8 +811,8 @@ def cmd_score_judge(args):
 
     loader = CorpusLoader(config.corpus.root)
     papers = loader.load_influence()
-    atlas = ATLASGraph(config.atlas.ontology_path, config.atlas.vocabularies_path)
-    vocab_loader = VocabularyLoader(atlas)
+    caveat = CaveatGraph(config.caveat.ontology_path, config.caveat.vocabularies_path)
+    vocab_loader = VocabularyLoader(caveat)
     scorer_factory = make_scorer_factory(vocab_loader, config.scoring)
 
     from traces.judge.prompt_assets import load_judge_prompt_assets

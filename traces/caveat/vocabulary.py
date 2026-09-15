@@ -1,11 +1,11 @@
 """
-ATLAS vocabulary loader.
+CAVEAT vocabulary loader.
 
 Loads rejection and engagement YAML vocabularies and resolves
 inheritance for a given unreliability mode.
 """
 from __future__ import annotations
-from traces.atlas.ontology_loader import ATLASGraph
+from traces.caveat.ontology_loader import CaveatGraph
 
 import logging
 from pathlib import Path
@@ -59,8 +59,8 @@ class Vocabulary:
 
 
 class VocabularyLoader:
-    def __init__(self, atlas_graph: ATLASGraph):
-        self.atlas = atlas_graph
+    def __init__(self, caveat_graph: CaveatGraph):
+        self.caveat = caveat_graph
         self._cache: dict[str, Vocabulary] = {}
 
     def load_rejection_vocabulary(
@@ -70,18 +70,18 @@ class VocabularyLoader:
         seen: set[Path] = set()
 
         if mode:
-            for path in self.atlas.resolve_lexicon_files(mode):
+            for path in self.caveat.resolve_lexicon_files(mode):
                 if path not in seen:
                     files.append(path)
                     seen.add(path)
 
         if has_retraction:
-            retraction_file = self.atlas.vocab_root / "rejection/retracted-literature-base.yaml"
+            retraction_file = self.caveat.vocab_root / "rejection/retracted-literature-base.yaml"
             if retraction_file not in seen:
                 files.append(retraction_file)
 
         if not files:
-            files = [self.atlas.vocab_root / "rejection/pseudoscience-base.yaml"]
+            files = [self.caveat.vocab_root / "rejection/pseudoscience-base.yaml"]
 
         return self._merge(files)
 

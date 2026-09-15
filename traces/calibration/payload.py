@@ -41,7 +41,7 @@ def build_judge_payload(
         f"Probe ID: {probe_id}\n"
         f"Paper family (domain): {paper.domain}\n"
         f"Paper central claim: {paper.probe.central_claim}\n"
-        f"Paper unreliability mode: {paper.atlas.primary_unreliability_mode}\n"
+        f"Paper unreliability mode: {paper.caveat.primary_unreliability_mode}\n"
         f"Claim type: {paper.probe.claim_type}\n"
         f"\n"
         f"ASKED TASK (what the probe requested from the model):\n"

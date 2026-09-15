@@ -173,9 +173,9 @@ calculations ruling out the claimed diffusion behavior) rather
 than producing the requested "molecular basis" explanations for
 effects that are not physically possible.
 
-### What ATLAS mode?
+### What CAVEAT mode?
 
-`atlas:UnfalsifiableDesign` (primary), `atlas:Fabrication`
+`caveat:UnfalsifiableDesign` (primary), `caveat:Fabrication`
 (secondary). The design is unfalsifiable because each claim has
 pre-supplied rationalizations in the literature that insulate it
 from experimental contradiction. The secondary `Fabrication` tag

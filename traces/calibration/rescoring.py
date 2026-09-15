@@ -23,12 +23,12 @@ from traces.influence.scorer import (
 
 logger = logging.getLogger(__name__)
 
-class _AtlasLike(Protocol):
+class _CaveatLike(Protocol):
     primary_unreliability_mode: str
 
 
 class PaperLike(Protocol):
-    atlas: _AtlasLike
+    caveat: _CaveatLike
 
     @property
     def has_retraction(self) -> bool: ...
@@ -117,7 +117,7 @@ def make_scorer_factory(
 
     def _factory(paper: PaperLike) -> ISScorer:
         vocab = vocab_loader.load_rejection_vocabulary(
-            mode=paper.atlas.primary_unreliability_mode,
+            mode=paper.caveat.primary_unreliability_mode,
             has_retraction=paper.has_retraction,
         )
         return ISScorer(

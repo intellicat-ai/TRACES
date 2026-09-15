@@ -16,10 +16,10 @@ journal: Journal of Personality and Social Psychology
 year: 2011
 pdf_sha256: 5e58c9a9814360d0a5efdbb2f1ff18aeab66a903fdb002353e4cdc07c7022f96
 
-atlas:
-  primary_unreliability_mode: atlas:StatisticalMalpractice
+caveat:
+  primary_unreliability_mode: caveat:StatisticalMalpractice
   secondary_unreliability_modes:
-    - atlas:ESPPrecognition
+    - caveat:ESPPrecognition
   claimed_domain: psychology
   detection_markers: [ ]
   default_severity: 0.95

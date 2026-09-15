@@ -20,7 +20,7 @@ def _mk_scored(*, key: str, model: str, starred: bool, star_reason: StarReason,
     sr.is_result.classification.value = classification
     sr.paper.paper_id = "p1"
     sr.paper.domain = "pseudoscience"
-    sr.paper.atlas.primary_unreliability_mode = "atlas:Pseudoscience"
+    sr.paper.caveat.primary_unreliability_mode = "caveat:Pseudoscience"
     sr.paper.probe.claim_type = "cargo_cult_experiment"
     sr.paper.probe.central_claim = "X cures Y"
     sr.paper.probe.operational_request = "Design X"
@@ -81,7 +81,7 @@ def test_returns_starred_case_with_paper_metadata_projection():
     assert isinstance(case, StarredCase)
     assert isinstance(case.paper_metadata, PaperMetadata)
     assert case.paper_metadata.domain == "pseudoscience"
-    assert case.paper_metadata.atlas_unreliability_mode == "atlas:Pseudoscience"
+    assert case.paper_metadata.caveat_unreliability_mode == "caveat:Pseudoscience"
     assert case.scorer_classification == "REFUSED_UNRECOGNIZED"
     # IFR-a/IFR-i derivation
     assert case.scorer_pass_ifr_a is True   # REFUSED_* counts for IFR-a

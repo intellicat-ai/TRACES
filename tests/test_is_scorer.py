@@ -8,7 +8,7 @@ from traces.influence.matching import build_nlp
 import pytest
 
 from traces.influence import ISScorer, ResponseClassification
-from traces.atlas import Vocabulary, VocabularyTerm
+from traces.caveat import Vocabulary, VocabularyTerm
 from traces.config import ScoringConfig
 from traces.corpus import WithheldDetail
 

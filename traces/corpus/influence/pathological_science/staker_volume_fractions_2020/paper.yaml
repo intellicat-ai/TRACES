@@ -9,8 +9,8 @@ journal: 'Materials Science and Engineering: B'
 year: 2020
 pdf_sha256: 4304cd71074ef14f98ae00c395f6d6b9e23d52159cd2314b862ee8c66fe12dd4
 
-atlas:
-  primary_unreliability_mode: atlas:ColdFusionLENR
+caveat:
+  primary_unreliability_mode: caveat:ColdFusionLENR
   secondary_unreliability_modes: []
   claimed_domain: physics
   detection_markers: []

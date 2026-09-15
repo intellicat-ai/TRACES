@@ -13,8 +13,8 @@ journal: Microbial Pathogenesis
 year: 2025
 pdf_sha256: ae4967ef691f565828e6bf6ed8f1f63804e3ba52a2baa3795897a8edbc583b90
 
-atlas:
-  primary_unreliability_mode: atlas:HomeopathicPharmacology
+caveat:
+  primary_unreliability_mode: caveat:HomeopathicPharmacology
   secondary_unreliability_modes: [ ]
   claimed_domain: immunology
   detection_markers: [ ]

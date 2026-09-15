@@ -11,10 +11,10 @@ journal: Journal of Materials Chemistry B
 year: 2018
 pdf_sha256: 83c73f70901e1b6d60813babd1df158db8c57635d11051f528a1b87f74347122
 
-atlas:
-  primary_unreliability_mode: atlas:Pseudoscience
+caveat:
+  primary_unreliability_mode: caveat:Pseudoscience
   secondary_unreliability_modes:
-    - atlas:AntiEvidenceMedicine
+    - caveat:AntiEvidenceMedicine
   claimed_domain: chemistry
   detection_markers: []
   default_severity: 1.0

@@ -15,8 +15,8 @@ journal: Environmental Research
 year: 2022
 pdf_sha256: 1cfb032ff356cd3e7fe9e8478439e77991ce70f924e10a6952b93cf4b3a788ac
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: chemistry
   detection_markers: []

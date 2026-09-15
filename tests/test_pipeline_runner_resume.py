@@ -2,14 +2,14 @@ import json
 from pathlib import Path
 
 from traces.config import (
-    AtlasConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig, TracesConfig,
+    CaveatConfig, AuditConfig, ModelConfig, PipelineConfig, ProviderConfig, TracesConfig,
 )
 from traces.pipeline.runner import ISRunner, RawProbeResult
 
 
 def _runner_with_models(models):
     config = TracesConfig(
-        atlas=AtlasConfig(ontology_path="x", vocabularies_path="y"),
+        caveat=CaveatConfig(ontology_path="x", vocabularies_path="y"),
         providers={"p": ProviderConfig(base_url="http://x", rpm_limit=0)},
         pipeline=PipelineConfig(concurrency=1),
         models=models,

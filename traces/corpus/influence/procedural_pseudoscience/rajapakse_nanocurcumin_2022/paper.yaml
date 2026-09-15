@@ -12,10 +12,10 @@ journal: ACS Omega
 year: 2022
 pdf_sha256: a6ce7198ab2d42d1e9ef2ad43f94c0b88761da548e02114678c3bf44accb69b0
 
-atlas:
-  primary_unreliability_mode: atlas:UnfalsifiableDesign
+caveat:
+  primary_unreliability_mode: caveat:UnfalsifiableDesign
   secondary_unreliability_modes:
-    - atlas:Fabrication
+    - caveat:Fabrication
   claimed_domain: pharmacology
   detection_markers: []
   default_severity: 0.5

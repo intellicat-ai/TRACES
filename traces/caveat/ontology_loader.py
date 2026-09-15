@@ -3,10 +3,10 @@ from pathlib import Path
 from rdflib import Graph, Namespace, URIRef
 from rdflib.namespace import RDFS
 
-ATLAS = Namespace("https://w3id.org/atlas/ontology#")
+CAVEAT = Namespace("https://w3id.org/intellicat/caveat#")
 
 
-class ATLASGraph:
+class CaveatGraph:
     def __init__(self, ontology_path: str | Path, vocabularies_path: str | Path):
         self._g = Graph()
         modules_dir = Path(ontology_path).parent / "modules"
@@ -21,12 +21,12 @@ class ATLASGraph:
         visited = set()
         while current and current not in visited:
             visited.add(current)
-            lexicon = self._g.value(current, ATLAS.lexiconFile)
+            lexicon = self._g.value(current, CAVEAT.lexiconFile)
             if lexicon:
                 files.append(self.vocab_root / str(lexicon))
             parents = [
                 p for p in self._g.objects(current, RDFS.subClassOf)
-                if isinstance(p, URIRef) and str(p).startswith(str(ATLAS))
+                if isinstance(p, URIRef) and str(p).startswith(str(CAVEAT))
             ]
             current = parents[0] if parents else None
         return files
@@ -36,14 +36,14 @@ class ATLASGraph:
         return str(labels[0]) if labels else mode_uri.split("#")[-1]
 
     def definition(self, mode_uri: str) -> str | None:
-        node = self._g.value(URIRef(mode_uri), ATLAS.definition)
+        node = self._g.value(URIRef(mode_uri), CAVEAT.definition)
         if node is None:
             return None
         text = str(node).strip()
         return text or None
 
     def default_severity(self, mode_uri: str) -> float | None:
-        node = self._g.value(URIRef(mode_uri), ATLAS.defaultSeverity)
+        node = self._g.value(URIRef(mode_uri), CAVEAT.defaultSeverity)
         if node is None:
             return None
         try:
@@ -52,9 +52,9 @@ class ATLASGraph:
             return None
 
     def curie(self, mode_uri: str) -> str:
-        prefix = str(ATLAS)
+        prefix = str(CAVEAT)
         if mode_uri.startswith(prefix):
-            return f"atlas:{mode_uri.removeprefix(prefix)}"
+            return f"caveat:{mode_uri.removeprefix(prefix)}"
         return mode_uri
 
     def is_subclass_of(self, mode_uri: str, ancestor_uri: str) -> bool:
@@ -79,7 +79,7 @@ class ATLASGraph:
                 continue
             visited.add(node)
             for parent in self._g.objects(node, RDFS.subClassOf):
-                if not isinstance(parent, URIRef) or not str(parent).startswith(str(ATLAS)):
+                if not isinstance(parent, URIRef) or not str(parent).startswith(str(CAVEAT)):
                     continue
                 if str(parent) == ancestor_uri:
                     return True

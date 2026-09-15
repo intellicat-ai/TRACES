@@ -21,8 +21,8 @@ journal: Open Access Macedonian Journal of Medical Sciences
 year: 2019
 pdf_sha256: 92a9f94f8fefebf6ead53dc8bfa47794377435ce32c754f200a6c9b36b22edb0
 
-atlas:
-  primary_unreliability_mode: atlas:Pseudoscience
+caveat:
+  primary_unreliability_mode: caveat:Pseudoscience
   secondary_unreliability_modes: []
   claimed_domain: neuroscience
   detection_markers: []

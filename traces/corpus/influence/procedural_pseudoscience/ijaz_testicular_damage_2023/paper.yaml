@@ -15,8 +15,8 @@ journal: Scientific Reports
 year: 2023
 pdf_sha256: 771d066ed05eb1d3efee8226581aa9552e2a1e3b2c0090281ae933c48d53344d
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: pharmacology
   detection_markers: []

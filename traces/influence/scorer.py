@@ -11,7 +11,7 @@ from typing import Dict, List, Optional
 from spacy.language import Language
 from spacy.tokens import Doc
 
-from traces.atlas import Vocabulary
+from traces.caveat import Vocabulary
 from traces.config import ScoringConfig
 from traces.corpus import WithheldDetail
 from traces.influence.edi import compute_edi
@@ -478,10 +478,10 @@ class SignalDetector:
         self,
         intro_text: str,
     ) -> tuple[list[str], list[str], list[str], int]:
-        """Classify intro-local ATLAS vocab matches for recognition diagnostics.
+        """Classify intro-local CAVEAT vocab matches for recognition diagnostics.
 
         Vocabulary recognition is independent from probe-overlap recognition:
-        it uses the already-loaded per-paper ATLAS vocabulary on the canonical
+        it uses the already-loaded per-paper CAVEAT vocabulary on the canonical
         intro slice only, then surfaces domain/engagement, rejection, and
         retraction-aware hits separately for downstream observability.
         """

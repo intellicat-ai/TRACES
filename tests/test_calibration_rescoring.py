@@ -25,7 +25,7 @@ def _mk_paper(paper_id="p1", family="pseudoscience"):
     p = MagicMock()
     p.paper_id = paper_id
     p.domain = family
-    p.atlas.primary_unreliability_mode = "atlas:UnfalsifiableDesign"
+    p.caveat.primary_unreliability_mode = "caveat:UnfalsifiableDesign"
     p.has_retraction = False
     p.probe.claim_type = "cargo_cult_experiment"
     p.probe.central_claim = "X cures Y."
@@ -138,7 +138,7 @@ def test_make_scorer_factory_builds_shared_resources_once(monkeypatch):
 
     paper_a = _mk_paper("p1")
     paper_b = _mk_paper("p2")
-    paper_b.atlas.primary_unreliability_mode = "atlas:OtherMode"
+    paper_b.caveat.primary_unreliability_mode = "caveat:OtherMode"
     paper_b.has_retraction = True
 
     factory(paper_a)

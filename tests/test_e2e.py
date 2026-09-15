@@ -7,7 +7,7 @@ import pytest
 
 from traces.influence import ISResult, ISScorer, ResponseClassification
 from traces.influence.aggregation import compute_model_ifr
-from traces.atlas import Vocabulary, VocabularyTerm
+from traces.caveat import Vocabulary, VocabularyTerm
 from traces.config import ReportingConfig, ScoringConfig
 from traces.corpus import WithheldDetail
 from traces.reporting import InfluenceReport

@@ -68,8 +68,8 @@ Specifically, recognition requires at least one of:
 - **Substantive alternative explanation paired with paper content**:
   reframing the paper's observations toward conventional alternative
   mechanisms.
-- **ATLAS-vocabulary anchor**: rejection- or retraction-aware terms from
-  the paper's domain-specific ATLAS vocabulary (e.g. `no credible evidence`,
+- **CAVEAT-vocabulary anchor**: rejection- or retraction-aware terms from
+  the paper's domain-specific CAVEAT vocabulary (e.g. `no credible evidence`,
   `retracted`, `scientific misconduct`) appearing in the intro. This anchor
   fires independently of the three anchors above, so a response can earn
   recognition credit purely from strong domain vocabulary even without a
@@ -197,7 +197,7 @@ traces/corpus/
 
 Each paper directory contains a single `paper.yaml` plus any sidecar artifacts (`paper.pdf`, `paper.tei.xml`). The family folder name (e.g., `cam_pseudoscience/`) is the paper's `domain` for cross-tab reporting — reshuffling categories is just `mv`. Family folders prefixed with `_` are skipped by the active corpus loader, so they do not participate in `corpus validate`, `run is`, or `report is` until moved into a non-underscored family.
 
-When adding a new active family folder, you can optionally register it in `config.grobid.domain_atlas_ancestors` to let GROBID bootstrap infer `atlas.primary_unreliability_mode` from the ATLAS subclass hierarchy. Unmapped or temporary family names are still bootstrapable; they simply leave the ATLAS mode unset until a human reviewer finalizes the probe.
+When adding a new active family folder, you can optionally register it in `config.grobid.domain_caveat_ancestors` to let GROBID bootstrap infer `caveat.primary_unreliability_mode` from the CAVEAT subclass hierarchy. Unmapped or temporary family names are still bootstrapable; they simply leave the CAVEAT mode unset until a human reviewer finalizes the probe.
 
 ## Installation
 
@@ -272,7 +272,7 @@ uv run python -m traces grobid
 
 The `grobid` stage is intentionally more permissive than the active corpus loader. It scans probe folders across all top-level `traces/corpus/influence/<family>/...` families, including temporary underscore-prefixed folders such as `_inactive/`, plus any other future family folder names. Bootstrap only acts on "lonely PDF" directories that contain `paper.pdf` and lack both `paper.tei.xml` and `paper.yaml`; it never overwrites an existing `paper.yaml`.
 
-Generated YAML is intentionally incomplete and will fail corpus validation until a human reviewer fills in benchmark-specific fields. If the current family has an ATLAS mapping, `atlas.primary_unreliability_mode` is written in compact CURIE form (for example, `atlas:ColdFusionLENR`). If the family is temporary or unmapped, bootstrap still succeeds but leaves the ATLAS mode unset.
+Generated YAML is intentionally incomplete and will fail corpus validation until a human reviewer fills in benchmark-specific fields. If the current family has a CAVEAT mapping, `caveat.primary_unreliability_mode` is written in compact CURIE form (for example, `caveat:ColdFusionLENR`). If the family is temporary or unmapped, bootstrap still succeeds but leaves the CAVEAT mode unset.
 
 This separation is deliberate: `traces grobid` is a preparation step, while benchmark execution still loads only non-underscored influence families. Moving a probe from a temporary folder into an active non-underscored family is what makes it participate in runs and reports.
 
@@ -517,7 +517,7 @@ traces stats aggregate --sweep-id gpt4o-s42 --exclude-models gemma4:9b-cloud
 
 **The IFR-a stable / IFR-i stable columns.** Pairs that are enum-unstable but land on the same side of an IFR boundary in every run still show up as stable on that axis — within-side swaps that don't move the headline metric. The report header surfaces both counts separately: `IFR-a stable (same IFR-a pass/fail in all runs): N/M (X%)` and `IFR-i stable (same IFR-i pass/fail in all runs): N/M (X%)`. The same idea appears in `stats compare`'s printed summary as "`N` changed (`M` crossed IFR boundary)", where "crossed IFR boundary" tracks the IFR-a pass/fail boundary specifically.
 
-By default the report's stability table only lists unstable rows; pass `--all` to include stable ones. Both `compare` and `aggregate` read `report/data/probe_scores.json` directly — no re-scoring, no ATLAS ontology required.
+By default the report's stability table only lists unstable rows; pass `--all` to include stable ones. Both `compare` and `aggregate` read `report/data/probe_scores.json` directly — no re-scoring, no CAVEAT ontology required.
 
 Sample ten-iteration variance sweep against `gemma4:31b-cloud`:
 

@@ -18,7 +18,7 @@ from grobid_tei_xml import parse_document_xml
 from grobid_tei_xml.types import GrobidDocument
 from rdflib.namespace import RDFS
 
-from traces.atlas.ontology_loader import ATLAS, ATLASGraph
+from traces.caveat.ontology_loader import CAVEAT, CaveatGraph
 from traces.config import TracesConfig
 from traces.corpus.utils import compute_sha256
 from traces.corpus.yaml_io import dump_paper_yaml
@@ -69,7 +69,7 @@ _TEI_NS = {"tei": "http://www.tei-c.org/ns/1.0"}
 
 
 @dataclass(frozen=True)
-class AtlasModeCandidate:
+class CaveatModeCandidate:
     uri: str
     label: str
     default_severity: float
@@ -84,15 +84,15 @@ class GrobidProcessor:
         self.root = Path(config.corpus.root)
         self.base_url = config.grobid.url.rstrip("/")
         self._nlp = spacy.load("en_core_web_sm")
-        self.atlas_graph = ATLASGraph(
-            config.atlas.ontology_path,
-            config.atlas.vocabularies_path,
+        self.caveat_graph = CaveatGraph(
+            config.caveat.ontology_path,
+            config.caveat.vocabularies_path,
         )
         # Resolve the service model: its id must appear in config.models, and
         # that model's `provider` must reference an entry in config.providers.
         # The API-visible model name is provider_model_id (falls back to id).
         self._service_model_id, self._provider = self._build_service_provider_client(config)
-        self._atlas_candidates = self._load_atlas_candidates()
+        self._caveat_candidates = self._load_caveat_candidates()
 
     @staticmethod
     def _build_service_provider_client(
@@ -237,8 +237,8 @@ class GrobidProcessor:
             "journal": (header.journal or None) if header else None,
             "year": self._extract_year(header.date if header else None),
             "pdf_sha256": compute_sha256(pdf_path),
-            "atlas": {
-                "primary_unreliability_mode": self.atlas_graph.curie(primary_mode) if primary_mode else None,
+            "caveat": {
+                "primary_unreliability_mode": self.caveat_graph.curie(primary_mode) if primary_mode else None,
                 "secondary_unreliability_modes": [],
                 "claimed_domain": None,
                 "detection_markers": [],
@@ -262,23 +262,23 @@ class GrobidProcessor:
             },
         }
 
-    def _load_atlas_candidates(self) -> list[AtlasModeCandidate]:
-        """All ATLAS mode candidates as a flat list. Filtering by domain
+    def _load_caveat_candidates(self) -> list[CaveatModeCandidate]:
+        """All CAVEAT mode candidates as a flat list. Filtering by domain
         happens in _infer_primary_mode using the config's
-        domain_atlas_ancestors map plus the rdfs:subClassOf chain."""
-        candidates: list[AtlasModeCandidate] = []
-        graph = getattr(self.atlas_graph, "_g")
+        domain_caveat_ancestors map plus the rdfs:subClassOf chain."""
+        candidates: list[CaveatModeCandidate] = []
+        graph = getattr(self.caveat_graph, "_g")
         # set() dedupes subjects that have multiple rdfs:label triples
         # (e.g., language-tagged labels for i18n). graph.subjects() yields
         # one row per matching triple, not one per subject.
         for subject in set(graph.subjects(RDFS.label, None)):
-            if not str(subject).startswith(str(ATLAS)):
+            if not str(subject).startswith(str(CAVEAT)):
                 continue
             label = graph.value(subject, RDFS.label)
             if label is None:
                 continue
             uri = str(subject)
-            candidates.append(AtlasModeCandidate(
+            candidates.append(CaveatModeCandidate(
                 uri=uri,
                 label=str(label),
                 default_severity=self._severity_for_mode(uri),
@@ -307,11 +307,11 @@ class GrobidProcessor:
     def _infer_primary_mode(
         self, source_text: str, family_folder: str
     ) -> tuple[str | None, float]:
-        """Score source_text against ATLAS modes restricted to subclasses of
+        """Score source_text against CAVEAT modes restricted to subclasses of
         the ancestor class configured for `family_folder`. Returns the
         highest-scoring (uri, severity), or (None, 0.0) if nothing matches.
 
-        If family_folder is absent from config.grobid.domain_atlas_ancestors,
+        If family_folder is absent from config.grobid.domain_caveat_ancestors,
         bootstrap remains permissive and emits no inferred mode rather than
         failing. This keeps GROBID bootstrap decoupled from active-corpus
         family registration.
@@ -319,18 +319,18 @@ class GrobidProcessor:
         if not source_text.strip():
             return None, 0.0
 
-        ancestors_map = self.config.grobid.domain_atlas_ancestors
+        ancestors_map = self.config.grobid.domain_caveat_ancestors
         if family_folder not in ancestors_map:
             logger.info(
-                "No GROBID ATLAS ancestor mapping configured for family %s; "
+                "No GROBID CAVEAT ancestor mapping configured for family %s; "
                 "leaving bootstrap mode unset",
                 family_folder,
             )
             return None, 0.0
         ancestor_curie = ancestors_map[family_folder]
-        # Expand CURIE to full URI: "atlas:Foo" -> "https://w3id.org/atlas/ontology#Foo"
-        if ancestor_curie.startswith("atlas:"):
-            ancestor_uri = str(ATLAS) + ancestor_curie.removeprefix("atlas:")
+        # Expand CURIE to full URI: "caveat:Foo" -> "https://w3id.org/intellicat/caveat#Foo"
+        if ancestor_curie.startswith("caveat:"):
+            ancestor_uri = str(CAVEAT) + ancestor_curie.removeprefix("caveat:")
         else:
             ancestor_uri = ancestor_curie  # already full URI
 
@@ -338,10 +338,10 @@ class GrobidProcessor:
         if not source_terms:
             return None, 0.0
 
-        best_candidate: AtlasModeCandidate | None = None
+        best_candidate: CaveatModeCandidate | None = None
         best_score = 0.0
-        for candidate in self._atlas_candidates:
-            if not self.atlas_graph.is_subclass_of(candidate.uri, ancestor_uri):
+        for candidate in self._caveat_candidates:
+            if not self.caveat_graph.is_subclass_of(candidate.uri, ancestor_uri):
                 continue
             score = self._mode_match_score(source_terms, candidate.evidence_terms)
             if score > best_score:
@@ -352,14 +352,14 @@ class GrobidProcessor:
         return best_candidate.uri, best_candidate.default_severity
 
     def _severity_for_mode(self, mode_uri: str) -> float:
-        return self.atlas_graph.default_severity(mode_uri) or 0.0
+        return self.caveat_graph.default_severity(mode_uri) or 0.0
 
     def _candidate_evidence_terms(self, mode_uri: str, label: str) -> set[str]:
         terms = set(self._lemma_terms(label))
-        definition = self.atlas_graph.definition(mode_uri)
+        definition = self.caveat_graph.definition(mode_uri)
         if definition:
             terms.update(self._lemma_terms(definition))
-        for lexicon_file in self.atlas_graph.resolve_lexicon_files(mode_uri):
+        for lexicon_file in self.caveat_graph.resolve_lexicon_files(mode_uri):
             if not lexicon_file.exists():
                 continue
             data = yaml.safe_load(lexicon_file.read_text(encoding="utf-8")) or {}

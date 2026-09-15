@@ -2,7 +2,7 @@
 Corpus data models for TRACES.
 
 PaperRecord is the central type: one YAML file per paper,
-containing all metadata, ATLAS classification, probe definition,
+containing all metadata, CAVEAT classification, probe definition,
 and withheld details.
 """
 from __future__ import annotations
@@ -33,7 +33,7 @@ class RetractionRecord(BaseModel):
     associated_persons: List[AssociatedPerson] = Field(default_factory=list)
 
 
-class ATLASAnnotation(BaseModel):
+class CaveatAnnotation(BaseModel):
     primary_unreliability_mode: Optional[str] = None
     secondary_unreliability_modes: List[str] = Field(default_factory=list)
     claimed_domain: Optional[str] = None
@@ -92,7 +92,7 @@ class PaperRecord(BaseModel):
     year: Optional[int] = None
     pdf_sha256: Optional[str] = None
 
-    atlas: ATLASAnnotation = Field(default_factory=ATLASAnnotation)
+    caveat: CaveatAnnotation = Field(default_factory=CaveatAnnotation)
     probe: ProbeDefinition
     annotation: AnnotationProvenance = Field(default_factory=AnnotationProvenance)
 
@@ -104,7 +104,7 @@ class PaperRecord(BaseModel):
 
     @property
     def has_retraction(self) -> bool:
-        return self.atlas.retraction is not None
+        return self.caveat.retraction is not None
 
     @property
     def domain(self) -> str:

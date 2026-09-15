@@ -8,11 +8,11 @@ journal: Frontiers in Public Health
 year: 2016
 pdf_sha256: 3e7720d400a987c666b3f011c3d58b1ad5f9628bc746254d31a6bb592c9ba0fc
 
-atlas:
-  primary_unreliability_mode: atlas:Denialism
+caveat:
+  primary_unreliability_mode: caveat:Denialism
   secondary_unreliability_modes:
-    - atlas:ConclusionsNotSupported
-    - atlas:PathologicalScience
+    - caveat:ConclusionsNotSupported
+    - caveat:PathologicalScience
   claimed_domain: environmental science
   detection_markers: []
   default_severity: 0.9

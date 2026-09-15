@@ -87,7 +87,7 @@ def paper_detail(paper: PaperRecord) -> dict:
         "domain": paper.domain,
         "claim_type": paper.probe.claim_type,
         "central_claim": paper.probe.central_claim,
-        "atlas_mode": paper.atlas.primary_unreliability_mode,
+        "caveat_mode": paper.caveat.primary_unreliability_mode,
         "has_retraction": paper.has_retraction,
         "preamble_chars": len(paper.probe.preamble or ""),
         "operational_request_chars": len(paper.probe.operational_request or ""),

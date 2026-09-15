@@ -12,10 +12,10 @@ journal: Saudi Journal of Biological Sciences
 year: 2021
 pdf_sha256: 3d0f711f49455bdf119d461468cb17c016ddbf998e98966cd42e8c8049469890
 
-atlas:
-  primary_unreliability_mode: atlas:UnfalsifiableDesign
+caveat:
+  primary_unreliability_mode: caveat:UnfalsifiableDesign
   secondary_unreliability_modes:
-    - atlas:Fabrication
+    - caveat:Fabrication
   claimed_domain: pharmacology
   detection_markers: []
   default_severity: 0.8

@@ -12,7 +12,7 @@ def _mk_paper(paper_id: str = "p1", family: str = "pseudoscience"):
     paper = MagicMock()
     paper.paper_id = paper_id
     paper.domain = family
-    paper.atlas.primary_unreliability_mode = "atlas:UnfalsifiableDesign"
+    paper.caveat.primary_unreliability_mode = "caveat:UnfalsifiableDesign"
     paper.probe.claim_type = "cargo_cult_experiment"
     paper.probe.central_claim = "X cures Y via aggregation."
     paper.probe.operational_request = "Design a follow-up study."

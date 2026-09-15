@@ -468,7 +468,7 @@ def test_report_is_single_run_stays_sequential(monkeypatch, tmp_path: Path, caps
     ontology.write_text("ok", encoding="utf-8")
 
     config = SimpleNamespace(
-        atlas=SimpleNamespace(
+        caveat=SimpleNamespace(
             ontology_path=str(ontology),
             vocabularies_path=str(tmp_path / "vocabs"),
         ),
@@ -492,8 +492,8 @@ def test_report_is_single_run_stays_sequential(monkeypatch, tmp_path: Path, caps
             return {"paper-1": _paper("paper-1")}
 
     class FakeVocabularyLoader:
-        def __init__(self, atlas_graph):
-            self.atlas_graph = atlas_graph
+        def __init__(self, caveat_graph):
+            self.caveat_graph = caveat_graph
 
     report_calls = []
 
@@ -506,8 +506,8 @@ def test_report_is_single_run_stays_sequential(monkeypatch, tmp_path: Path, caps
 
     monkeypatch.setattr(main_module, "_preflight_config", lambda *_args, **_kwargs: config)
     monkeypatch.setattr("traces.corpus.loader.CorpusLoader", FakeCorpusLoader)
-    monkeypatch.setattr(main_module, "ATLASGraph", lambda *_args, **_kwargs: object())
-    monkeypatch.setattr("traces.atlas.VocabularyLoader", FakeVocabularyLoader)
+    monkeypatch.setattr(main_module, "CaveatGraph", lambda *_args, **_kwargs: object())
+    monkeypatch.setattr("traces.caveat.VocabularyLoader", FakeVocabularyLoader)
     monkeypatch.setattr(main_module, "_report_is_for_run", fake_report)
     monkeypatch.setattr(main_module, "ThreadPoolExecutor", fail_executor)
 
@@ -544,7 +544,7 @@ def test_report_is_sweep_generates_reports_in_parallel_and_prints_in_run_order(
     }
 
     config = SimpleNamespace(
-        atlas=SimpleNamespace(
+        caveat=SimpleNamespace(
             ontology_path=str(ontology),
             vocabularies_path=str(tmp_path / "vocabs"),
         ),
@@ -570,8 +570,8 @@ def test_report_is_sweep_generates_reports_in_parallel_and_prints_in_run_order(
     vocab_loader_inits: list[object] = []
 
     class FakeVocabularyLoader:
-        def __init__(self, atlas_graph):
-            self.atlas_graph = atlas_graph
+        def __init__(self, caveat_graph):
+            self.caveat_graph = caveat_graph
             vocab_loader_inits.append(self)
 
     active = 0
@@ -579,7 +579,7 @@ def test_report_is_sweep_generates_reports_in_parallel_and_prints_in_run_order(
     lock = threading.Lock()
     seen_runs: list[str] = []
 
-    def fake_report(_config, run_id, _atlas_graph, _vocab_loader, _papers, **_kwargs):
+    def fake_report(_config, run_id, _caveat_graph, _vocab_loader, _papers, **_kwargs):
         nonlocal active, max_active
         with lock:
             active += 1
@@ -593,8 +593,8 @@ def test_report_is_sweep_generates_reports_in_parallel_and_prints_in_run_order(
     monkeypatch.setattr(main_module, "_preflight_config", lambda *_args, **_kwargs: config)
     monkeypatch.setattr(main_module, "discover_sweep_run_ids", lambda *_args, **_kwargs: run_ids)
     monkeypatch.setattr("traces.corpus.loader.CorpusLoader", FakeCorpusLoader)
-    monkeypatch.setattr(main_module, "ATLASGraph", lambda *_args, **_kwargs: object())
-    monkeypatch.setattr("traces.atlas.VocabularyLoader", FakeVocabularyLoader)
+    monkeypatch.setattr(main_module, "CaveatGraph", lambda *_args, **_kwargs: object())
+    monkeypatch.setattr("traces.caveat.VocabularyLoader", FakeVocabularyLoader)
     monkeypatch.setattr(main_module, "_report_is_for_run", fake_report)
 
     main_module.cmd_report_is(args)
@@ -619,7 +619,7 @@ def test_report_is_sweep_failure_includes_run_id(monkeypatch, tmp_path: Path):
     run_ids = ["good-run", "bad-run"]
 
     config = SimpleNamespace(
-        atlas=SimpleNamespace(
+        caveat=SimpleNamespace(
             ontology_path=str(ontology),
             vocabularies_path=str(tmp_path / "vocabs"),
         ),
@@ -643,10 +643,10 @@ def test_report_is_sweep_failure_includes_run_id(monkeypatch, tmp_path: Path):
             return {"paper-1": _paper("paper-1")}
 
     class FakeVocabularyLoader:
-        def __init__(self, atlas_graph):
-            self.atlas_graph = atlas_graph
+        def __init__(self, caveat_graph):
+            self.caveat_graph = caveat_graph
 
-    def fake_report(_config, run_id, _atlas_graph, _vocab_loader, _papers, **_kwargs):
+    def fake_report(_config, run_id, _caveat_graph, _vocab_loader, _papers, **_kwargs):
         if run_id == "bad-run":
             raise RuntimeError("boom")
         return f"/tmp/{run_id}/report.md"
@@ -654,8 +654,8 @@ def test_report_is_sweep_failure_includes_run_id(monkeypatch, tmp_path: Path):
     monkeypatch.setattr(main_module, "_preflight_config", lambda *_args, **_kwargs: config)
     monkeypatch.setattr(main_module, "discover_sweep_run_ids", lambda *_args, **_kwargs: run_ids)
     monkeypatch.setattr("traces.corpus.loader.CorpusLoader", FakeCorpusLoader)
-    monkeypatch.setattr(main_module, "ATLASGraph", lambda *_args, **_kwargs: object())
-    monkeypatch.setattr("traces.atlas.VocabularyLoader", FakeVocabularyLoader)
+    monkeypatch.setattr(main_module, "CaveatGraph", lambda *_args, **_kwargs: object())
+    monkeypatch.setattr("traces.caveat.VocabularyLoader", FakeVocabularyLoader)
     monkeypatch.setattr(main_module, "_report_is_for_run", fake_report)
 
     with pytest.raises(CliError, match=r"Report generation failed for run-id bad-run: boom"):

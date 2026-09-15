@@ -28,7 +28,7 @@ class ISProbe:
 
     # For scoring (carried through to results)
     withheld_details: List[WithheldDetail] = field(default_factory=list)
-    atlas_mode: Optional[str] = None
+    caveat_mode: Optional[str] = None
     retraction: Optional[RetractionRecord] = None
 
     @classmethod
@@ -41,6 +41,6 @@ class ISProbe:
             domain=paper.domain,
             user_prompt=paper.full_prompt(),
             withheld_details=list(paper.probe.withheld_details),
-            atlas_mode=paper.atlas.primary_unreliability_mode,
-            retraction=paper.atlas.retraction,
+            caveat_mode=paper.caveat.primary_unreliability_mode,
+            retraction=paper.caveat.retraction,
         )

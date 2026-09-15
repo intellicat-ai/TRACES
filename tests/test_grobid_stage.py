@@ -11,16 +11,16 @@ import yaml
 from grobid_tei_xml.types import GrobidAuthor, GrobidBiblio, GrobidDocument
 
 from traces.config import TracesConfig
-from traces.corpus.grobid_processor import AtlasModeCandidate, GrobidProcessor
+from traces.corpus.grobid_processor import CaveatModeCandidate, GrobidProcessor
 
 
 def _make_config(tmp_path: Path) -> TracesConfig:
     return TracesConfig.model_validate(
         {
             "corpus": {"root": str(tmp_path)},
-            "atlas": {
-                "ontology_path": "../atlas-ontology/src/ontology/atlas.ttl",
-                "vocabularies_path": "../atlas-ontology/vocabularies/",
+            "caveat": {
+                "ontology_path": "../caveat/src/ontology/caveat.ttl",
+                "vocabularies_path": "../caveat/vocabularies/",
             },
             "grobid": {"url": "http://localhost:8070", "timeout": 10},
             "providers": {
@@ -147,43 +147,43 @@ def test_bootstrap_yaml_contains_expected_placeholders(tmp_path):
 
 def test_primary_mode_prefers_specific_abbreviation_signal(tmp_path):
     processor = _make_processor(tmp_path)
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#OrgoneEnergy",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#OrgoneEnergy",
             label="Orgone energy field",
             default_severity=0.25,
             evidence_terms={"orgone", "reich", "accumulator", "energy"},
         ),
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#ColdFusionLENR",
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#ColdFusionLENR",
             label="Cold fusion LENR",
             default_severity=0.85,
             evidence_terms={"lenr", "cold", "fusion", "nuclear", "palladium"},
         ),
     ]
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
-    processor.config.grobid.domain_atlas_ancestors["pseudoscience"] = "atlas:Pseudoscience"
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
+    processor.config.grobid.domain_caveat_ancestors["pseudoscience"] = "caveat:Pseudoscience"
 
     mode_uri, severity = processor._infer_primary_mode(
         "Low energy nuclear reactions (LENR) in palladium systems",
         "pseudoscience",
     )
 
-    assert mode_uri == "https://w3id.org/atlas/ontology#ColdFusionLENR"
+    assert mode_uri == "https://w3id.org/intellicat/caveat#ColdFusionLENR"
     assert severity == 0.85
 
 
-def test_primary_mode_written_as_atlas_curie(tmp_path):
+def test_primary_mode_written_as_caveat_curie(tmp_path):
     processor = _make_processor(tmp_path)
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#OrgoneEnergy",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#OrgoneEnergy",
             label="Orgone energy",
             default_severity=0.45,
             evidence_terms={"biofield", "healing", "immune", "outcomes"},
         ),
     ]
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
     paper_dir = _paper_dir(tmp_path, "influence", "pseudoscience", "paper_curie")
     pdf_path = paper_dir / "paper.pdf"
     pdf_path.write_bytes(b"pdf-bytes")
@@ -195,14 +195,14 @@ def test_primary_mode_written_as_atlas_curie(tmp_path):
         doc=_make_document(),
     )
 
-    assert yaml_data["atlas"]["primary_unreliability_mode"] == "atlas:OrgoneEnergy"
+    assert yaml_data["caveat"]["primary_unreliability_mode"] == "caveat:OrgoneEnergy"
 
 
 def test_default_severity_reads_from_ontology(tmp_path):
     processor = _make_processor(tmp_path)
-    processor.atlas_graph.default_severity = Mock(return_value=0.82)
+    processor.caveat_graph.default_severity = Mock(return_value=0.82)
 
-    assert processor._severity_for_mode("https://w3id.org/atlas/ontology#ColdFusionLENR") == 0.82
+    assert processor._severity_for_mode("https://w3id.org/intellicat/caveat#ColdFusionLENR") == 0.82
 
 
 def test_structured_section_text_excludes_heading(tmp_path):
@@ -299,16 +299,16 @@ def test_bootstrap_domain_derived_from_folder(tmp_path):
 
 def test_mode_not_assigned_from_generic_overlap_only(tmp_path):
     processor = _make_processor(tmp_path)
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="atlas:orgone",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="caveat:orgone",
             label="Orgone energy",
             default_severity=0.7,
             evidence_terms={"orgone", "energy"},
         ),
     ]
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
-    processor.config.grobid.domain_atlas_ancestors["pseudoscience"] = "atlas:Pseudoscience"
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
+    processor.config.grobid.domain_caveat_ancestors["pseudoscience"] = "caveat:Pseudoscience"
 
     mode_uri, severity = processor._infer_primary_mode(
         "Energy effects in a material system",
@@ -321,22 +321,22 @@ def test_mode_not_assigned_from_generic_overlap_only(tmp_path):
 
 def test_infer_primary_mode_returns_none_when_no_overlap(tmp_path):
     processor = _make_processor(tmp_path)
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="atlas:biofield",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="caveat:biofield",
             label="Biofield energy healing",
             default_severity=0.7,
             evidence_terms={"biofield", "healing", "therapy"},
         ),
-        AtlasModeCandidate(
-            uri="atlas:predatory",
+        CaveatModeCandidate(
+            uri="caveat:predatory",
             label="Predatory journal publication",
             default_severity=0.2,
             evidence_terms={"predatory", "journal", "publication"},
         ),
     ]
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
-    processor.config.grobid.domain_atlas_ancestors["pseudoscience"] = "atlas:Pseudoscience"
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: True
+    processor.config.grobid.domain_caveat_ancestors["pseudoscience"] = "caveat:Pseudoscience"
 
     mode_uri, severity = processor._infer_primary_mode(
         "Marine sediment transport in estuaries",
@@ -457,10 +457,10 @@ def test_bootstrap_all_processes_underscore_family_without_overwriting_yaml(tmp_
     assert stats == {"processed": 1, "skipped": 0, "failed": 0}
     written = yaml.safe_load((draft_dir / "paper.yaml").read_text(encoding="utf-8"))
     assert written["paper_id"] == "draft_bootstrap"
-    assert written["atlas"]["primary_unreliability_mode"] is None
+    assert written["caveat"]["primary_unreliability_mode"] is None
 
 
-def test_bootstrap_all_processes_unmapped_family_without_atlas_mapping(tmp_path):
+def test_bootstrap_all_processes_unmapped_family_without_caveat_mapping(tmp_path):
     processor = _make_processor(tmp_path)
     paper_dir = _paper_dir(tmp_path, "influence", "openaccess", "paper_open")
     (paper_dir / "paper.pdf").write_bytes(b"pdf")
@@ -478,8 +478,8 @@ def test_bootstrap_all_processes_unmapped_family_without_atlas_mapping(tmp_path)
     assert stats == {"processed": 1, "skipped": 0, "failed": 0}
     written = yaml.safe_load((paper_dir / "paper.yaml").read_text(encoding="utf-8"))
     assert written["paper_id"] == "paper_open"
-    assert written["atlas"]["primary_unreliability_mode"] is None
-    assert written["atlas"]["default_severity"] == 0.0
+    assert written["caveat"]["primary_unreliability_mode"] is None
+    assert written["caveat"]["default_severity"] == 0.0
 
 
 def test_bootstrap_all_skips_existing_yaml_without_modifying_it(tmp_path):
@@ -504,15 +504,15 @@ def test_infer_primary_mode_filters_by_ontology_ancestor(tmp_path):
     processor = _make_processor(tmp_path)
 
     # Two candidates; only one is a subclass of the configured ancestor.
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#OrgoneEnergy",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#OrgoneEnergy",
             label="Orgone energy",
             default_severity=0.7,
             evidence_terms={"orgone", "energy", "field"},
         ),
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#Fabrication",
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#Fabrication",
             label="Fabrication",
             default_severity=0.95,
             evidence_terms={"orgone", "energy", "field"},  # same evidence — would tie if not filtered
@@ -520,9 +520,9 @@ def test_infer_primary_mode_filters_by_ontology_ancestor(tmp_path):
     ]
     # Stub: only OrgoneEnergy is a subclass of Pseudoscience (the
     # configured ancestor for "pseudoscience" folders).
-    pseudoscience_uri = "https://w3id.org/atlas/ontology#Pseudoscience"
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: (
-        mode_uri == "https://w3id.org/atlas/ontology#OrgoneEnergy"
+    pseudoscience_uri = "https://w3id.org/intellicat/caveat#Pseudoscience"
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: (
+        mode_uri == "https://w3id.org/intellicat/caveat#OrgoneEnergy"
         and ancestor_uri == pseudoscience_uri
     )
 
@@ -531,44 +531,44 @@ def test_infer_primary_mode_filters_by_ontology_ancestor(tmp_path):
         "pseudoscience",
     )
 
-    assert mode_uri == "https://w3id.org/atlas/ontology#OrgoneEnergy"
+    assert mode_uri == "https://w3id.org/intellicat/caveat#OrgoneEnergy"
     # Fabrication had higher severity but was filtered out.
 
 
-_ATLAS_TTL = Path("../atlas-ontology/src/ontology/atlas.ttl")
+_CAVEAT_TTL = Path("../caveat/src/ontology/caveat.ttl")
 
 
 @pytest.mark.skipif(
-    not _ATLAS_TTL.exists(),
-    reason="ATLAS ontology repo not present at ../atlas-ontology/ (clone it sibling to TRACES)",
+    not _CAVEAT_TTL.exists(),
+    reason="CAVEAT ontology repo not present at ../caveat/ (clone it sibling to TRACES)",
 )
-def test_atlas_graph_is_subclass_of_walks_chain(tmp_path):
-    """ATLASGraph.is_subclass_of returns True for transitive descendants."""
-    from traces.atlas.ontology_loader import ATLASGraph
+def test_caveat_graph_is_subclass_of_walks_chain(tmp_path):
+    """CaveatGraph.is_subclass_of returns True for transitive descendants."""
+    from traces.caveat.ontology_loader import CaveatGraph
 
-    graph = ATLASGraph(
-        ontology_path=str(_ATLAS_TTL),
-        vocabularies_path="../atlas-ontology/vocabularies/",
+    graph = CaveatGraph(
+        ontology_path=str(_CAVEAT_TTL),
+        vocabularies_path="../caveat/vocabularies/",
     )
 
     # WaterMemory -> UltraHighDilution -> Pseudoscience -> PremiseLevelFailure -> UnreliabilityMode
     assert graph.is_subclass_of(
-        "https://w3id.org/atlas/ontology#WaterMemory",
-        "https://w3id.org/atlas/ontology#Pseudoscience",
+        "https://w3id.org/intellicat/caveat#WaterMemory",
+        "https://w3id.org/intellicat/caveat#Pseudoscience",
     )
     assert graph.is_subclass_of(
-        "https://w3id.org/atlas/ontology#WaterMemory",
-        "https://w3id.org/atlas/ontology#UnreliabilityMode",
+        "https://w3id.org/intellicat/caveat#WaterMemory",
+        "https://w3id.org/intellicat/caveat#UnreliabilityMode",
     )
     # Reflexive (a class is a subclass of itself for our purposes).
     assert graph.is_subclass_of(
-        "https://w3id.org/atlas/ontology#Pseudoscience",
-        "https://w3id.org/atlas/ontology#Pseudoscience",
+        "https://w3id.org/intellicat/caveat#Pseudoscience",
+        "https://w3id.org/intellicat/caveat#Pseudoscience",
     )
     # Negative: WaterMemory is not under DeliberateMisconduct.
     assert not graph.is_subclass_of(
-        "https://w3id.org/atlas/ontology#WaterMemory",
-        "https://w3id.org/atlas/ontology#DeliberateMisconduct",
+        "https://w3id.org/intellicat/caveat#WaterMemory",
+        "https://w3id.org/intellicat/caveat#DeliberateMisconduct",
     )
 
 
@@ -579,22 +579,22 @@ def test_is_subclass_of_handles_multi_parent_classes():
     from rdflib import Graph, URIRef
     from rdflib.namespace import RDFS
 
-    from traces.atlas.ontology_loader import ATLAS, ATLASGraph
+    from traces.caveat.ontology_loader import CAVEAT, CaveatGraph
 
     # Construct a tiny graph with: Multi -> [BranchA, BranchB], each under Top.
     g = Graph()
-    multi = URIRef(str(ATLAS) + "Multi")
-    branch_a = URIRef(str(ATLAS) + "BranchA")
-    branch_b = URIRef(str(ATLAS) + "BranchB")
-    top = URIRef(str(ATLAS) + "Top")
+    multi = URIRef(str(CAVEAT) + "Multi")
+    branch_a = URIRef(str(CAVEAT) + "BranchA")
+    branch_b = URIRef(str(CAVEAT) + "BranchB")
+    top = URIRef(str(CAVEAT) + "Top")
     g.add((multi, RDFS.subClassOf, branch_a))
     g.add((multi, RDFS.subClassOf, branch_b))
     g.add((branch_a, RDFS.subClassOf, top))
     g.add((branch_b, RDFS.subClassOf, top))
 
-    # Build an ATLASGraph instance without loading any TTL files, then
+    # Build a CaveatGraph instance without loading any TTL files, then
     # swap in our tiny test graph.
-    graph = ATLASGraph.__new__(ATLASGraph)
+    graph = CaveatGraph.__new__(CaveatGraph)
     graph._g = g
     graph.vocab_root = None  # not used by is_subclass_of
 
@@ -610,9 +610,9 @@ def test_infer_primary_mode_respects_family_restriction(tmp_path):
     another family. Verifies the ontology-based ancestor filter actively
     excludes off-family modes."""
     processor = _make_processor(tmp_path)
-    processor._atlas_candidates = [
-        AtlasModeCandidate(
-            uri="https://w3id.org/atlas/ontology#BiofieldEnergyHealing",
+    processor._caveat_candidates = [
+        CaveatModeCandidate(
+            uri="https://w3id.org/intellicat/caveat#BiofieldEnergyHealing",
             label="Biofield energy healing",
             default_severity=0.7,
             evidence_terms={"biofield", "healing", "treatment"},
@@ -620,14 +620,14 @@ def test_infer_primary_mode_respects_family_restriction(tmp_path):
     ]
     # BiofieldEnergyHealing is under Pseudoscience, NOT under DeliberateMisconduct.
     # A 'notorious_retractions' folder maps to DeliberateMisconduct (default).
-    processor.atlas_graph.is_subclass_of = lambda mode_uri, ancestor_uri: (
-        mode_uri == "https://w3id.org/atlas/ontology#BiofieldEnergyHealing"
-        and ancestor_uri == "https://w3id.org/atlas/ontology#Pseudoscience"
+    processor.caveat_graph.is_subclass_of = lambda mode_uri, ancestor_uri: (
+        mode_uri == "https://w3id.org/intellicat/caveat#BiofieldEnergyHealing"
+        and ancestor_uri == "https://w3id.org/intellicat/caveat#Pseudoscience"
     )
 
     mode_uri, severity = processor._infer_primary_mode(
         "Biofield energy treatment for immunomodulation",
-        "notorious_retractions",  # default: atlas:DeliberateMisconduct
+        "notorious_retractions",  # default: caveat:DeliberateMisconduct
     )
 
     assert mode_uri is None

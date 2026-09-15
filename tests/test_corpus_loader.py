@@ -14,8 +14,8 @@ def _make_paper_yaml(paper_id: str) -> dict:
         "doi": f"10.xxxx/{paper_id}",
         "title": f"Test paper {paper_id}",
         "authors": ["Test Author"],
-        "atlas": {
-            "primary_unreliability_mode": "atlas:Pseudoscience",
+        "caveat": {
+            "primary_unreliability_mode": "caveat:Pseudoscience",
             "default_severity": 0.95,
         },
         "probe": {

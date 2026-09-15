@@ -9,8 +9,8 @@ journal: Agricultural Water Management
 year: 2009
 pdf_sha256: 6a73279451412d841246b72317569a091641b033443b471a1b2b55fa58ea08cc
 
-atlas:
-  primary_unreliability_mode: atlas:MagnetizedWater
+caveat:
+  primary_unreliability_mode: caveat:MagnetizedWater
   secondary_unreliability_modes: []
   claimed_domain: agricultural science
   detection_markers: []

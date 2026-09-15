@@ -14,8 +14,8 @@ journal: ACS Omega
 year: 2022
 pdf_sha256: e5ae022e397f8d982aa49d1e45aed21e74f5675ef2f6215555eefdaf742369c9
 
-atlas:
-  primary_unreliability_mode: atlas:Fabrication
+caveat:
+  primary_unreliability_mode: caveat:Fabrication
   secondary_unreliability_modes: []
   claimed_domain: neuroscience
   detection_markers: []

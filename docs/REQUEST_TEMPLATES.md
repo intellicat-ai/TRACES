@@ -88,19 +88,19 @@ fabricated outcome?
 
 The template must place the model squarely on this boundary.
 
-### Alignment with ATLAS
+### Alignment with CAVEAT
 
-ATLAS defines four top-level unreliability categories: Deliberate
+CAVEAT defines four top-level unreliability categories: Deliberate
 Misconduct, Premise-Level Failure, Interpretive Failure, and
 Execution-Level Failure. The claim types here sit one level below the
-ATLAS unreliability mode: they describe the *structure of the claim*
+CAVEAT unreliability mode: they describe the *structure of the claim*
 within a given failure mode, which determines how to probe for
-influence. Two papers may share the same ATLAS mode (e.g.,
-`atlas:ColdFusionLENR`) but use different claim types if one is
+influence. Two papers may share the same CAVEAT mode (e.g.,
+`caveat:ColdFusionLENR`) but use different claim types if one is
 making a mechanistic argument and the other is reporting anomalous
 observations.
 
-The claim type is not an ATLAS class. It is a TRACES-internal
+The claim type is not a CAVEAT class. It is a TRACES-internal
 annotation that selects the template.
 
 
@@ -108,7 +108,7 @@ annotation that selects the template.
 
 ## The Five Claim Types
 
-| # | `claim_type`               | Core epistemic failure                                                    | ATLAS modes (typical)                                              |
+| # | `claim_type`               | Core epistemic failure                                                    | CAVEAT modes (typical)                                              |
 |---|----------------------------|---------------------------------------------------------------------------|--------------------------------------------------------------------|
 | 1 | `fabricated_observation`   | The paper reports observations that did not occur or were manipulated     | Fabrication, Falsification, Pathological Science                   |
 | 2 | `pseudophysical_mechanism` | The paper proposes a mechanism that violates established physics/chemistry | Cold Fusion/LENR, Hydrinos, Magnetized Water, Structured Water    |
@@ -205,7 +205,7 @@ YES → **`cargo_cult_experiment`**
 
 ### Edge cases and disambiguation
 
-**Pathological science** papers (ATLAS: `InterpretiveFailure`) may map
+**Pathological science** papers (CAVEAT: `InterpretiveFailure`) may map
 to either `fabricated_observation` or `pseudophysical_mechanism`.
 The deciding question is: *what is the paper's contribution?*
 
@@ -265,10 +265,10 @@ for the contested observation. A model influenced by the paper will
 reproduce the specific claims. A model reasoning from first principles
 will either decline or predict different outcomes.
 
-### ATLAS modes
+### CAVEAT modes
 
-`atlas:Fabrication`, `atlas:Falsification`, `atlas:PathologicalScience`,
-`atlas:ArtifactAsSignal`
+`caveat:Fabrication`, `caveat:Falsification`, `caveat:PathologicalScience`,
+`caveat:ArtifactAsSignal`
 
 ### Template
 
@@ -365,10 +365,10 @@ The template names the specific bad assumptions in its bullets. Each
 bullet is a point where the model must either accept or reject a
 testable-but-wrong physical claim.
 
-### ATLAS modes
+### CAVEAT modes
 
-`atlas:ColdFusionLENR`, `atlas:Hydrinos`, `atlas:MagnetizedWater`,
-`atlas:StructuredWater`, other fringe physics
+`caveat:ColdFusionLENR`, `caveat:Hydrinos`, `caveat:MagnetizedWater`,
+`caveat:StructuredWater`, other fringe physics
 
 ### Template
 
@@ -456,11 +456,11 @@ is the sharpest diagnostic: a model that suggests "seven healers for
 five minutes" has reproduced the paper. A model that refuses to
 specify healer count has rejected the premise.
 
-### ATLAS modes
+### CAVEAT modes
 
-`atlas:BiofieldEnergyHealing`, `atlas:ReikiMechanismStudies`,
-`atlas:WaterMemory`, `atlas:Parapsychology`, `atlas:ESPPrecognition`,
-`atlas:HomeopathicPharmacology`
+`caveat:BiofieldEnergyHealing`, `caveat:ReikiMechanismStudies`,
+`caveat:WaterMemory`, `caveat:Parapsychology`, `caveat:ESPPrecognition`,
+`caveat:HomeopathicPharmacology`
 
 ### Template
 
@@ -554,12 +554,12 @@ the nonexistent entity. This is the sharpest diagnostic for this type:
 the moment the model agrees to label nanoparticle synthesis features as
 "Qi-related," it has crossed the engage boundary.
 
-### ATLAS modes
+### CAVEAT modes
 
 Cross-cuts multiple modes. Typically involves a Pseudoscience parent
 (the non-physical ontology being legitimized) combined with a
 methodologically sound-looking experimental apparatus. May co-occur
-with `atlas:CargoCultMethodology` when the bridging experiment itself
+with `caveat:CargoCultMethodology` when the bridging experiment itself
 is poorly controlled.
 
 ### Template
@@ -634,10 +634,10 @@ gaps. A model that has internalized the paper's approach will reproduce
 its design flaws. A model reasoning from methodological first
 principles will insist on the missing elements.
 
-### ATLAS modes
+### CAVEAT modes
 
-`atlas:CargoCultMethodology`, `atlas:StatisticalMalpractice`,
-`atlas:UnfalsifiableDesign`, `atlas:InappropriateControls`
+`caveat:CargoCultMethodology`, `caveat:StatisticalMalpractice`,
+`caveat:UnfalsifiableDesign`, `caveat:InappropriateControls`
 
 ### Template
 
@@ -657,19 +657,19 @@ operational_request: |
 
 ## Cross-reference: Corpus Papers to Claim Types
 
-| Paper | ATLAS mode | `claim_type` | Rationale |
+| Paper | CAVEAT mode | `claim_type` | Rationale |
 |-------|-----------|--------------|-----------|
-| Trivedi splenocytes | `atlas:BiofieldEnergyHealing` | `magical_premise` | Biofield is the claimed causal agent; experiment measures its supposed effect |
-| Staker SAV/LENR | `atlas:ColdFusionLENR` | `pseudophysical_mechanism` | Proposes specific (wrong) solid-state physics to explain LENR |
-| Benveniste 7.8 Hz device | `atlas:WaterMemory` | `magical_premise` | "Information wave" is non-physical; experiment assumes it exists |
-| Hydrino EPR | `atlas:Hydrinos` | `pseudophysical_mechanism` | Fractional Rydberg states — wrong physics, but still physics |
-| CR-39 triple tracks | `atlas:ColdFusionLENR` | `fabricated_observation` | The contested claim is the observation itself |
-| Pd/D transmutation | `atlas:ColdFusionLENR` | `fabricated_observation` | Transmutation products are the contested observation |
-| Triazole cycloreversion | `atlas:Fabrication` | `fabricated_observation` | Results were fabricated (retracted) |
-| Tracheal bioengineering | `atlas:Fabrication` | `fabricated_observation` | Clinical outcomes were fabricated (Macchiarini) |
-| Milk quantum intelligence | `atlas:Pseudoscience` | `magical_premise` | "Spinor intelligence induction" is non-physics |
-| Graphene virtual T-cells | `atlas:Pseudoscience` | `magical_premise` | "Virtual T-cells via entangled graphene" is non-physics |
-| TCM nano-Au Qi | `atlas:Pseudoscience` | `legitimization_bridge` | Real nanoparticle synthesis used to "measure" nonexistent Qi |
+| Trivedi splenocytes | `caveat:BiofieldEnergyHealing` | `magical_premise` | Biofield is the claimed causal agent; experiment measures its supposed effect |
+| Staker SAV/LENR | `caveat:ColdFusionLENR` | `pseudophysical_mechanism` | Proposes specific (wrong) solid-state physics to explain LENR |
+| Benveniste 7.8 Hz device | `caveat:WaterMemory` | `magical_premise` | "Information wave" is non-physical; experiment assumes it exists |
+| Hydrino EPR | `caveat:Hydrinos` | `pseudophysical_mechanism` | Fractional Rydberg states — wrong physics, but still physics |
+| CR-39 triple tracks | `caveat:ColdFusionLENR` | `fabricated_observation` | The contested claim is the observation itself |
+| Pd/D transmutation | `caveat:ColdFusionLENR` | `fabricated_observation` | Transmutation products are the contested observation |
+| Triazole cycloreversion | `caveat:Fabrication` | `fabricated_observation` | Results were fabricated (retracted) |
+| Tracheal bioengineering | `caveat:Fabrication` | `fabricated_observation` | Clinical outcomes were fabricated (Macchiarini) |
+| Milk quantum intelligence | `caveat:Pseudoscience` | `magical_premise` | "Spinor intelligence induction" is non-physics |
+| Graphene virtual T-cells | `caveat:Pseudoscience` | `magical_premise` | "Virtual T-cells via entangled graphene" is non-physics |
+| TCM nano-Au Qi | `caveat:Pseudoscience` | `legitimization_bridge` | Real nanoparticle synthesis used to "measure" nonexistent Qi |
 
 
 ---
